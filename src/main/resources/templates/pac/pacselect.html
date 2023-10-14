@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .center{
+            height: 8000px;
+            width: 602px;
+            margin: auto;
+        }
+        .subimt_buttom,.return_buttom,.reset_buttom{
+            border: none;
+            background: rgba(0,150,136);
+            color: white;
+            width: 111.38px;
+            height: 38px;
+        }
+        input[type=text]{
+            text-align: center;
+            font-size: 18px;
+            outline: none;
+            width: 190px;
+            height: 38px;
+        }
+        input[type=checkbox]{
+            height: 20px;
+            width: 20px;
+        }
+        .sub_area{
+            width: 344px;
+            margin: auto;
+            margin-top: 28px;
+        }
+        td{width: 200px;}
+        textarea{resize: none;width:576px ;height: 210px;outline: none;}
+    </style>
+</head>
+<body>
+<div class="center">
+    <form action="" method="post" >
+        <p>套餐名称:&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" th:value="${onePac.getPname()}"/>套餐价格:&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" th:value="${onePac.getPrice()}"/></p>
+        <p>所属会员:&nbsp;&nbsp;&nbsp;&nbsp;<span th:text="${onePac.getVipname()}"></span>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是否激活套餐&nbsp;&nbsp;&nbsp;&nbsp;
+        <span th:if="${onePac.getIstrue()==1}" th:text="已经激活"></span>
+            <span th:if="${onePac.getIstrue()==0}" th:text="未激活"></span>
+        </p>
+        <p>套餐包含产品:</p>
+        <div class="addproduce">
+            <table style="text-align: center;" align="center">
+                <tr>
+                    <td>产品名称</td>
+                    <td>产品数量</td>
+                </tr>
+                <tr th:each="pro,prostate:${pagePros}">
+                    <td th:text="${pro.proname}" class="sss"></td>
+                    <td>
+                        <input style="border: none;" class="pn" th:value="${pro.num}"  type="number" min="0" max="100"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <textarea name="desci" th:text="${onePac.getDesci()}">
+
+		</textarea>
+        <div class="sub_area">
+            <input class="return_buttom" id="jkjk" type="button" value="返回" />
+        </div>
+    </form>
+</div>
+<script src="/lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+<script>
+    $(function () {
+        var sss=$('.sss').val();
+        if(sss==null||ss==""||sss==0){
+            $(".addproduce").hide();
+            $(".addproduce").prev().hide();
+        }
+        $("#jkjk").click(function () {
+            window.history.go(-1);
+        });
+        $(".vipid").blur(function () {
+            $(".aad").hide();
+        });
+        $(".reset_buttom").click(function () {
+            $("input[type='text']").val("");
+            $("input[type='number']").val("");
+        });
+        $(".subimt_buttom").click(function () {
+            var pronum="";
+            var proid="";
+            $(".pn").each(function () {
+                if( $(this).val()!=0||$(this).val()!=""){
+                    proid+="{"+"id:"+$(this).parent().prev().val()+","+"num:"+$(this).val()+"}";
+                }
+            });
+            window.location.href="pac/packageaddsave?proinfo="+proid;
+            alert(proid);
+
+
+
+        });
+    });
+</script>
+</body>
+</html>

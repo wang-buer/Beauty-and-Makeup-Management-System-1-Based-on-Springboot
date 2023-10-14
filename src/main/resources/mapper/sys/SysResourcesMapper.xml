@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mh.sys.mapper.SysResourcesMapper">
+    <select id="getResources" parameterType="int" resultType="com.mh.model.Menu">
+        SELECT
+            sr.id,
+            sr.pid,
+            sr.cname title,
+            sr.url href,
+            sr.icon,
+            sr.target
+        FROM
+            sys_resources sr
+        WHERE
+          sr.id IN (
+            SELECT
+            srr.resources_id
+            FROM
+            sys_role_resources srr
+            WHERE
+            srr.role_id IN (
+                SELECT
+                sur.roleid
+                FROM
+                `emp_role` sur
+                WHERE
+                sur.empid = #{userId}
+            )
+        )
+    </select>
+</mapper>

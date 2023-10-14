@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>产品类型修改页</title>
+</head>
+<style>
+    body{background: rgb(242,242,242)}
+    input{outline: none}
+    .center{
+        height: 251px;
+        width: 415px;
+        margin: auto;
+        margin-top: 84px;
+    }
+    .tn{height: 41px;
+        width: 407px;
+        border-radius: 10px;
+    }
+    #sub{
+        margin-left: 39px;
+        border: none;
+        width: 72px;
+        height: 32px;
+        border-radius: 12px;
+        background: rgba(0,150,136);
+        color: white;
+    }
+    .reset{    margin-left: 168px;
+        border: none;
+        width: 72px;
+        height: 32px;
+        border-radius: 12px;
+        background: rgba(255,87,34);
+        color: white;
+    }
+    #pnameverify{
+        color: red;
+        display: none;
+    }
+</style>
+<body>
+<div class="center">
+
+    <form action="/pro/mdfpt">
+        <input name="id" type="hidden"  th:value="${prot.getId()}"/>
+        <p>类型名称<input class="tn" type="text" name="name" th:value="${prot.getName()}" /><span id="pnameverify"></span></p>
+        <p>类型描述<input class="tn" type="text"  name="desc" th:value="${prot.getDesc()}"/></p>
+        <input type="submit"  id="sub" value="提交" />
+        <input type="reset" value="重置" class="reset"  />
+    </form>
+    <input type="hidden" name="name1" th:value="${prot.getName()}" />
+</div>
+<script src="/lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+<script>
+    $(function () {
+        $("[name='name']").blur(function () {
+            if($(this).val()==$("[name='name1']").val()){
+
+            }else{
+                $.getJSON("protypeValid?name="+$("[name='name']").val(),function (data) {
+                    if($.parseJSON(data)==true){
+                        $("#pnameverify").hide(600);
+                        $("#sub").attr("disabled",false);
+                    }else if($.parseJSON(data)==false){
+
+                        $("#pnameverify").text("此产品类型已经存在");
+                        $("#pnameverify").show(600)
+                        $("#sub").attr("disabled",true);
+                    }else{
+                        $("#sub").attr("disabled", true);
+                    }
+                });
+            }
+
+        });
+    })
+</script>
+</body>
+</html>

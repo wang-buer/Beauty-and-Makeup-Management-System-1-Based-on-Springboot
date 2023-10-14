@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mh.member.mapper.VpackageMapper">
+    <resultMap id="packageMap" type="Vpackage">
+        <id column="pid" property="pid"></id>
+        <result column="pname" property="pname"></result>
+        <result column="price" property="price"></result>
+        <collection property="produces" ofType="Produces">
+            <result property="name" column="name"></result>
+            <result property="num" column="num"></result>
+        </collection>
+    </resultMap>
+
+   <select id="getPackageAndProduceList" resultType="Vpackage" parameterType="int">
+       SELECT
+          pa.`pid`,
+          pa.`pname`,
+          pa.`price`,
+          pa.`vipid`,
+          pa.`modifyDate`,
+          pa.`createDate`,
+          pa.`istrue`
+        FROM
+          `chuangmeng`.`package` pa
+          RIGHT JOIN `cus_package` pc ON pc.`packageid`=pa.`pid`
+         WHERE pc.`cusid`=#{id}
+   </select>
+    <insert id="addCustomerAndPackage" parameterType="int">
+            INSERT INTO `chuangmeng`.`cus_package` (`cusid`, `packageid`)
+            VALUES
+              (
+                #{cid},
+                #{pid}
+              )
+    </insert>
+
+    <select id="getPackageList" resultMap="packageMap">
+            SELECT
+              pa.`pid`,
+              pa.`pname`,
+              pa.`price`,
+              pr.`name`,
+              pr.`num`
+            FROM
+              `chuangmeng`.`package` pa
+            LEFT JOIN `pagepro` pro ON pro.`packageid`=pa.`pid`
+            LEFT JOIN produce pr ON pr.`id`=pro.`produceid`AND pr.`num`>0
+            WHERE pa.`istrue`=1
+    </select>
+</mapper>

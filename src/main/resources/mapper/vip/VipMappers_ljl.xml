@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mh.vip.mapper.VipMappers_ljl">
+    <select id="getVipList" resultType="Vip_ljl">
+        SELECT
+      `id`,
+      `vname`,
+      `vprice`,
+      `describe`,
+      `createTime`,
+      `modifyDate`
+FROM
+  `chuangmeng`.`vip`
+    </select>
+
+    <insert id="addvip" parameterType="Vip_ljl">
+        INSERT INTO `chuangmeng`.`vip` (
+
+  `vname`,
+  `vprice`,
+  `describe`,
+  `createTime`,
+  `modifyDate`,
+  vtid
+)
+VALUES
+  (
+
+    #{vname},
+    #{vprice},
+    #{describe},
+    #{createTime},
+    #{modifyDate},
+    #{vtid}
+  ) ;
+    </insert>
+    <update id="mfyvip" parameterType="Vip_ljl">
+UPDATE
+  `chuangmeng`.`vip`
+SET
+  `vname` =  #{vname},
+  `vprice` =  #{vprice},
+  vtid=#{vtid},
+    <if test="describe!=null">
+      `describe` = #{describe},
+    </if>
+    <if test="createTime!=null">
+        `createTime` =  #{createTime},
+    </if>
+  `modifyDate` =  #{modifyDate}
+WHERE id=#{id}
+
+    </update>
+    <select id="getonevip" resultType="Vip_ljl">
+        SELECT
+  `id`,
+  `vname`,
+  `vprice`,
+  `describe`,
+  `createTime`,
+  `modifyDate`,
+  vtid,
+  (SELECT pname FROM package WHERE package.`pid`=vip.`vtid`) AS pacname
+FROM
+  `chuangmeng`.`vip`
+WHERE id=#{id}
+
+    </select>
+    <delete id="delvip">
+        DELETE
+FROM
+  `chuangmeng`.`vip`
+WHERE `id` = #{vid} ;
+    </delete>
+    <select id="vipReport" resultType="CusPayL">
+        SELECT
+        c.`id`,
+        c.`price`,
+        cus.`cname`,
+        c.`paydate`,
+        e.`empname`,
+        c.`paydesc`,
+        c.`meal_sum`,
+        c.`produce_sum`,
+        (SELECT vip.`vname` FROM vip vip WHERE c.`vipid`=vip.`id`) AS vipname
+        FROM cuspay c,customer cus,emp emp,emp e
+        WHERE   c.`empid`=emp.`id` AND  c.`cusid`=cus.`cid` AND c.`empid`=e.`id` AND c.`produce_id` IS NULL AND c.`package` IS NULL
+        <if test="month!=null">
+            and DATE_FORMAT( c.paydate, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )
+        </if>
+        <if test="prevMonth!=null">
+            and  PERIOD_DIFF( date_format( now( ) , '%Y%m' ) , date_format( c.paydate, '%Y%m' ) ) =1
+        </if>
+        <if test="year!=null">
+            and  YEAR(c.paydate)=YEAR(NOW())
+        </if>
+        <if test="empid!=null and empid!=''">
+            and c.empid=#{empid}
+        </if>
+        ORDER BY price DESC
+    </select>
+</mapper>

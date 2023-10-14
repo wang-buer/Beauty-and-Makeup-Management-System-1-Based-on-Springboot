@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        body{background: rgb(242,242,242);}
+        .protable td{height: 36.89px;}
+        .protable{
+            width: 1101px;
+            margin-top: 26px;
+            background: white;
+            text-align: center;
+            border-color: rgb(242,242,242);
+            position: relative;
+            top: 35px;
+        }
+
+        [name=cname]{
+            height: 30px;
+            border-radius: 3px;
+            margin-left: 10px;
+            outline: none;
+        }
+        .produce_select_form{
+            width: 400px;
+            height: 32px;
+            padding-top: 49px;
+            padding-left: 98px;
+
+        }
+        .sel_produce{
+            height: 32px;
+            border: none;
+            background: rgb(0,150,136);
+            color: white;
+
+        }
+        .add_produce_button{
+
+            background: rgb(0,150,136);
+            height: 30px;
+            width: 100px;
+            text-align: center;
+            border-radius: 3px;
+            margin-left: 99px;
+            margin-top: 17px;
+            font-size: 14px;
+
+        }
+        .add_produce_button a{
+            color: white;
+            text-decoration: none;
+            position: relative;
+            top: 4px;
+        }
+        tr:hover{background: rgb(242,242,242);}
+        .optarea{width: 1299px;background: white;margin-top: 18px;}
+        .a_href{
+            background: rgb(0,150,136);
+            width: 34px;
+            height: 22px;
+            margin: auto;
+            display: inline-block;
+            position: relative;
+            top: 2px;
+        }
+        .a_href a{
+            text-decoration: none;
+            color: white;
+            font-size: 11px;
+            position: relative;
+            top: -2px;
+        }
+        input{outline: none}
+        .jnum{width: 65px;
+            height: 16px;}
+        .cancle{
+            background: rgba(255,87,34);
+            width: 34px;
+            height: 22px;
+            display: inline-block;
+            position: relative;
+            top: 2px;
+            margin-left: 7px;
+        }
+        .cancle span{
+            position: relative;
+            top: -2px;
+            font-size: 11px;
+            color: white;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+<div class="optarea">
+    <form action="" class="produce_select_form" >
+        产品名称&nbsp&nbsp<select name="pid" class="pid" style="outline: none;height: 32px;">
+        <option th:if="${produceList!=null}" th:each="pro,produceListState:${produceList}" th:value="${pro.getId()}" th:text="${pro.getName()}"></option>
+        <option th:if="${produceList==null}">请联系管理员</option>
+    </select>
+        <input  class="sel_produce" type="button" style="border-radius: 3px;" value="查询"/>
+        <span style="font-size: 10px;color: red;" class="truncate_inwork">清空记录</span>
+    </form>
+
+    <table border="1px" cellspacing="0" cellpadding="0"  align="center" id="pt" class="protable" >
+        <tr>
+            <td>序号</td>
+            <td>进货号</td>
+            <td>产品名称</td>
+            <td>进货人</td>
+            <td>进货时间</td>
+            <td>进货数量</td>
+            <td>进货总计/￥</td>
+        </tr>
+        <tr th:each="produce,intobookState:${proIntoBook}" >
+            <td th:text="${intobookState.count}"></td>
+            <td id="pid" th:text="${produce.getId()}"></td>
+            <td th:text="${produce.getPname()}"></td>
+            <td th:text="${produce.getEmpname()}"></td>
+            <td class="num" th:text="${produce.getIntotime()}"></td>
+            <td th:text="${produce.num}"></td>
+            <td th:text="${produce.getTotalprice()}"></td>
+        </tr>
+        <tr  class="append_info">
+            <td colspan="7" style="font-size: 11px;color: black;">暂无信息</td>
+        </tr>
+    </table>
+</div>
+<script src="/lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+<script>
+$(function () {
+    $(".append_info").hide();
+    var protableheight=parseInt($(".protable").height())+220;
+    $(".optarea").height(protableheight+"px");
+    $(".sel_produce").click(function () {
+
+       window.location.href="purchaseRecords?pid="+$(".pid").val();
+    });
+
+    var length=document.getElementById("pt").rows.length;
+    if(length<=2){
+        $(".append_info").show(20);
+    }
+    $(".truncate_inwork").click(function () {
+        window.location.href="truncate_inwork";
+    });
+
+});
+</script>
+
+</body>
+</html>

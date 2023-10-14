@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>后台管理-登陆</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="/lib/layui-v2.5.4/css/layui.css" media="all">
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="/lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
+    <script src="/lib/jq-module/jquery.particleground.min.js" charset="utf-8"></script>
+    <link type="text/css" rel="stylesheet" href="/projects/sys/login.css"/>
+</head>
+<body>
+<div class="layui-container">
+    <div class="admin-login-background">
+        <div class="layui-form login-form">
+            <form class="layui-form" action="">
+                <div class="layui-form-item logo-title">
+                    <h1>美容美妆管理系统</h1>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-icon layui-icon-username" for="username"></label>
+                    <input type="text" name="username" lay-verify="required|account" placeholder="用户名"
+                           autocomplete="off" class="layui-input" value="admin">
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-icon layui-icon-password" for="password"></label>
+                    <input type="password" name="password" lay-verify="required|password" placeholder="密码"
+                           autocomplete="off" class="layui-input" value="123456">
+                </div>
+               <!-- <div class="layui-form-item" style="text-align: right;">
+                    <a href="/forgetPassword/page">忘记密码?</a>
+                </div>-->
+                <div class="layui-form-item">
+                    <button class="layui-btn layui-btn-fluid" lay-submit="" lay-filter="login">登 入</button>
+                </div>
+                <div class="layui-form-item" style="text-align: center">
+                    <p><a href="#" target="_self"></a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/lib/layui-v2.5.4/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="/lib/layui-v2.5.4/layui.all.js"></script>
+<script type="text/javascript">
+    layui.use(['form'], function () {
+        var form = layui.form, layer = layui.layer;
+        // 登录过期的时候，跳出ifram框架
+        if (top.location != self.location) top.location = self.location;
+        // 进行登录操作
+        form.on('submit(login)', function (data) {
+            data = data.field;
+            if (data.username == '') {
+                layer.msg('用户名不能为空');
+                return false;
+            }
+            if (data.password == '') {
+                layer.msg('密码不能为空');
+                return false;
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/login',
+                data: {username: data.username, password: data.password},
+                success: function (data) {
+                    if (data.success) {
+                       window.location.href = '/index';
+                    } else {
+                        layer.alert(data.info, {title: '登录失败'});
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

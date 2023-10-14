@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>角色管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/lib/layui-v2.5.4/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+    <script src="/lib/layui-v2.5.4/layui.js" charset="utf-8"></script>
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+
+        <fieldset class="layui-elem-field layuimini-search">
+            <legend>搜索信息</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <form class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">角色名称</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="rname" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <a class="layui-btn" lay-submit="" lay-filter="data-search-btn">搜索</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
+
+        <div class="layui-btn-group">
+            <button class="layui-btn data-add-btn">添加</button>
+        </div>
+
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+
+        <div id="add-main" style="display: none;margin-top: 20px">
+            <form class="layui-form" id="add-form" lay-filter="add-form" action="">
+                <div class="layui-form-item">
+                    <label class="layui-form-label" style="width: 100px">角色名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="rname" style="width: 240px"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label" style="width: 100px">描述信息</label>
+                    <div class="layui-input-block">
+                        <input name="des" style="width: 240px" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="save">提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary" id="closeBtn">取消</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+        <div id="edit-main" style="display: none;margin-top: 20px">
+            <form class="layui-form" id="edit-form" lay-filter="edit-form" action="">
+                <div class="layui-form-item" style="display: none">
+                    <label class="layui-form-label" style="width: 100px">id</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="rid" style="width: 240px"
+                                 autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label" style="width: 100px">角色名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="rname" style="width: 240px"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label" style="width: 100px">描述信息</label>
+                    <div class="layui-input-block">
+                        <input name="des" style="width: 240px" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="save">提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary" id="edit-closeBtn">取消</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div id="role-setting" style="display: none;">
+
+            <div class="layui-inline" style="display: none;">
+                <label class="layui-form-label">id</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="id" >
+                </div>
+            </div>
+
+            <table class="layui-hide" id="roleset" lay-filter="roleSetTableFilter"></table>
+
+        </div>
+        <div id="res-setting" style="display: none;margin-top: 20px">
+            <table class="layui-hide" id="res_tableId" lay-filter="res_tableId"></table>
+
+        </div>
+
+        <script type="text/html" id="currentTableBar">
+            <a class="layui-btn layui-btn-xs data-count-edit layui-btn-normal" lay-event="powerSetting">权限设置</a>
+            <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+        </script>
+    </div>
+</div>
+</body>
+</html>
+<script src="/projects/sys/roleManagerPage.js" charset="utf-8"></script>

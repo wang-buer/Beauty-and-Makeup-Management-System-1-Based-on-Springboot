@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        body{background: rgb(242,242,242);}
+        .protable td{height: 36.89px;}
+        .protable{
+            width: 1101px;
+            margin-top: 26px;
+            background: white;
+            text-align: center;
+            border-color: rgb(242,242,242);
+        }
+
+        [name=cname]{
+            height: 30px;
+            border-radius: 3px;
+            margin-left: 10px;
+            outline: none;
+        }
+        .produce_select_form{
+            width: 300px;
+            height: 32px;
+            padding-top: 49px;
+            padding-left: 98px;
+
+        }
+        .sel_produce{
+            height: 32px;
+            border: none;
+            background: rgb(0,150,136);
+            color: white;
+
+        }
+        .add_produce_button{
+
+            background: rgb(0,150,136);
+            height: 30px;
+            width: 100px;
+            text-align: center;
+            border-radius: 3px;
+            margin-left: 99px;
+            margin-top: 17px;
+            font-size: 14px;
+
+        }
+        .add_produce_button a{
+            color: white;
+            text-decoration: none;
+            position: relative;
+            top: 4px;
+        }
+        tr:hover{background: rgb(242,242,242);}
+        .optarea{width: 1299px;background: white;margin-top: 18px;}
+        .a_href{
+            background: rgb(0,150,136);
+            width: 34px;
+            height: 22px;
+            margin: auto;
+            display: inline-block;
+            position: relative;
+            top: 2px;
+        }
+        .a_href a{
+            text-decoration: none;
+            color: white;
+            font-size: 11px;
+            position: relative;
+            top: -2px;
+            }
+        input{outline: none}
+        .jnum{width: 65px;
+            height: 16px;}
+        .cancle{
+            background: rgba(255,87,34);
+            width: 34px;
+            height: 22px;
+            display: inline-block;
+            position: relative;
+            top: 2px;
+            margin-left: 7px;
+        }
+        .cancle span{
+            position: relative;
+            top: -2px;
+            font-size: 11px;
+            color: white;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+<div class="optarea">
+    <form action="" class="produce_select_form">
+        产品名称<input name="cname"  th:value="${proname}"/>
+        <input  class="sel_produce" type="button"  value="查询"/>
+    </form>
+    <div class="add_produce_button"style="background:rgb(0,150,136);height: 30px;width: 100px;"><a href="purchaseRecords">查看进货记录</a></div>
+    <table border="1px" cellspacing="0" cellpadding="0"  align="center" class="protable" >
+        <tr style="background: rgb(242,242,242);">
+            <td>序号</td>
+            <td>产品编号</td>
+            <td>产品名称</td>
+            <td>单价/￥</td>
+            <td>剩余数量</td>
+            <td>合计/￥</td>
+            <td>操作</td>
+        </tr>
+        <tr th:each="produce,produceState:${produceList}">
+            <td th:text="${produceState.count}"></td>
+            <td id="pid" th:text="${produce.id}"></td>
+            <td th:text="${produce.name}"></td>
+            <td th:text="${produce.price}"></td>
+            <td class="num" th:text="${produce.num}"></td>
+            <td th:text="${produce.price}*${produce.num}"></td>
+            <td>
+                <div style="margin: auto;width: 164px;text-align: center;">
+
+                    <div class="a_href"><a href="javascript:void(0)" class="intogoods">进货</a></div>
+                    <input th:type="number" min="1" style="display: none;" class="jnum">
+                    <div class="cancle"><span>取消</span></div>
+                </div>
+            </td>
+        </tr>
+        <td th:colspan="7">
+            <a href="javascript:void(0)" id="pre" style="text-decoration: none;font-size: 17px;color:black;" ><</a>
+            <input id="curr"  th:value="${pageInfo.curr}" type="text" style="border:none;border-radius:3px;height: 30px;width: 30px;background:  rgba(0,150,136);text-align: center;color: white;" readonly="readonly"/>
+            <a href="javascript:void(0)" id="next" style="text-decoration: none;font-size: 17px;color:black;">></a>
+            <input id="pc" type="hidden" th:value="${pageInfo.getTotalpagecount()}"/><!--总页数-->
+            <input style="width: 35px;margin-left:35px;" type="number" name="pageSize" th:value="${pageInfo.getPageSize()}" min="5" max="30" />条数据/页
+        </td>
+    </table>
+</div>
+<script src="/lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+<script>
+    $(function () {
+        /*点击进货按钮*/
+      $(".cancle").hide();
+
+
+        $(".intogoods").click(function () {
+            var ttt=$(this).text();
+            if(ttt=="进货"){
+                $(this).text("确认");
+                $(this).parent().next().show(200);
+                $(this).parent().next().next().show(200);
+            }
+            if(ttt=="确认"){
+               // alert();
+                var num=parseInt($(this).parent().next().val())+parseInt($(this).parent().parent().parent().parent().find(".num").text());
+                var id=$(this).parent().parent().parent().parent().find("#pid").text();
+                var num1=$(this).parent().next().val();
+                window.location.href="updataProduceNum?num="+num+"&id="+id+"&innum="+num1;
+            }
+        });
+
+        $(".cancle").click(function () {
+            $(".intogoods").text("进货");
+            $(".jnum").val("");
+            $(this).prev().hide(200);
+            $(this).hide(200);
+        });
+        /*点击进货按钮*/
+
+        $(".pro_select").click(function () {
+            var pid= $(this).parent().parent().parent().parent().find("#pid").text();
+            window.location.href="proselect_page?pid="+pid;
+        });
+        $("[name='pageSize']").blur(
+            function () {
+                var pagesize= $("[name='pageSize']").val();
+                window.location.href="producesize?produceName="+$("[name='cname']").val()+"&pageSize="+pagesize;
+            }
+        );
+        var protableheight=parseInt($(".protable").height())+220;
+        $(".optarea").height(protableheight+"px");
+        $(".sel_produce").click(function(){
+            var pagesize= $("[name='pageSize']").val();
+            window.location.href="producesize?produceName="+$("[name='cname']").val()+"&pageSize="+pagesize;
+        })
+        $("#next").click(function () {
+            var pagesize= $("[name='pageSize']").val();
+            var curr= $("#curr").val();
+            curr++;
+            window.location.href="producesize?curr="+curr+"&produceName="+$("[name='cname']").val()+"&pageSize="+pagesize;
+        });
+
+
+        $("#pre").click(function () {
+            var pagesize= $("[name='pageSize']").val();
+            var curr= $("#curr").val();
+            curr--;
+            window.location.href="producesize?curr="+curr+"&produceName="+$("[name='cname']").val()+"&pageSize="+pagesize;
+        });
+
+        if($("#curr").val()==1){
+            $("#pre").hide(100);
+        }
+        if($("#curr").val()==$("#pc").val()){
+            $("#next").hide(100);
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mh.sys.mapper.RoleMapper">
+    <select id="getRoles" parameterType="string" resultType="com.mh.sys.entity.Role">
+        SELECT
+          `rid`,
+          `rname`,
+          `create_date`,
+          `update_date`,
+          `des`,
+          `isdel`
+        FROM
+          `chuangmeng`.`role`
+        WHERE isdel=0
+        <if test="rname != null">
+            AND rname LIKE CONCAT('%',#{rname},'%');
+        </if>
+    </select>
+
+    <select id="getRes" resultType="Resource">
+       SELECT r.id, r.pid, r.cname, (IF (rr.resources_id IS NULL, 0, 1)) isdel
+FROM sys_resources r LEFT JOIN ( SELECT resources_id FROM sys_role_resources WHERE role_id = #{rid} ) rr ON (r.id = rr.resources_id)
+
+
+
+    </select>
+
+    <insert id="setres">
+
+           INSERT INTO sys_role_resources (role_id, resources_id)
+           SELECT #{rid},id
+           from sys_resources
+           where id in (${resIds})
+
+    </insert>
+
+    <delete id="delete" parameterType="int">
+        DELETE
+        FROM
+          `chuangmeng`.`sys_role_resources`
+        WHERE `role_id` = #{rid} ;
+    </delete>
+</mapper>

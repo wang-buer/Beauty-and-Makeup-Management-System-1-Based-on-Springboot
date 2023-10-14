@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mh.sys.mapper.UserManagerMapper">
+    <select id="getUsers" resultType="com.mh.sys.entity.Emp">
+        SELECT e.empname,e.id,e.emptype,e.login,e.isdel,e.create_date,
+        (
+         SELECT rname
+         FROM role
+         WHERE role.rid IN( SELECT roleid FROM emp_role  er WHERE er.`empid`=e.id)
+        ) roles
+        FROM emp e
+        WHERE e.isdel=0
+        <if test="userName != null">
+            AND e.empname LIKE CONCAT('%',#{userName},'%')
+        </if>
+        <if test="pageBean != null">
+            Limit #{pageBean.page},#{pageBean.limit}
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .center{
+            width: 1299px;
+            height: 350px;
+            background: white;
+            margin: auto;
+        }
+        input{outline: none}
+        #selpt{
+            height: 50px;
+            width: 500px;
+            margin: auto;
+            margin-left: 114px;
+            margin-top: 20px;
+            outline: none;
+            border-radius: 6px;
+        }
+        body{background: rgb(242,242,242)}
+        .protable{
+            margin-top: 30px;
+            width: 1101px;
+            background: white;
+            text-align: center;
+            border-color: rgb(242,242,242);
+            position: relative;
+            top: 27px;
+        }
+        #dels_opt{
+            width: 100px;
+            height: 30px;
+            background: rgba(0,150,136);
+            color: white;
+            text-align: center;
+            border-radius: 4px;
+            float: left;
+            font-size: 14px;
+        }
+        #add-opt{
+            margin-left: 112px;
+            width: 100px;
+            color: white;
+            height: 30px;
+            text-align: center;
+            background: rgba(255,87,34);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .protable td{height: 36.89px;}
+        #curr{border:0px;}
+      tr:hover{background: rgb(242,242,242);}
+        .opt_area_one{
+            margin: auto;
+            width: 231px;
+            margin-top: 37px;
+        }
+        .a{
+            position: relative;
+            top: 5px;
+        }
+        .promfy{
+            background: rgba(0,150,136);text-decoration: none;color: white;border-radius:  1px;display: block;font-size: 11px;
+            width: 34px;
+            height: 23px;
+            float: left;
+            padding-top: 6px;
+            border-radius: 4px;
+        }
+        .prodel{
+            background: rgba(255,87,34);text-decoration: none;color: white;border-radius: 1px;display: block;font-size: 11px;
+            width: 34px;
+            height: 23px;
+            margin-left: 50px;
+            padding-top: 6px;
+            border-radius: 4px;
+        }
+        .opt_area_two{
+            margin: auto;
+            height: 23px;
+            width: 84px;
+
+        }
+    </style>
+</head>
+<body>
+
+<div class="center">
+    <table border="1px" cellspacing="0" cellpadding="0" class="protable" id="prot" align="center">
+        <tr style="background: rgb(242,242,242)">
+            <td>多选操作</td>
+            <td>序号</td>
+            <td>产品类型</td>
+            <td>描述</td>
+            <td>操作</td>
+        </tr>
+
+        <tr th:each="pt,protypeState:${proTypeList}">
+            <td><input class="checks" type="checkbox" style="height: 18px;width: 18px;color: white;" th:value="${pt.getId()}" /></td>
+            <td id="pid" th:text="${pt.getId()}">
+            <td th:text="${pt.getName()}">
+            <td th:text="${pt.getDesc()}">
+            <td>
+            <div class="opt_area_two">
+                <a href="javascript:void (0)" class="promfy">修改</a>
+                <a href="javascript:void (0)" class="prodel"/>删除</a>
+            </div>
+
+            </td>
+        </tr>
+        <tr >
+            <td th:colspan="5">
+
+                <a href="#" id="pre" style="text-decoration: none;font-size: 17px;color:black;" ><</a>
+                <input id="curr"  th:value="${pageInfo.getCurr()}" type="text" style="color:black;height: 30px;width: 30px;background:  rgba(0,150,136);text-align: center;color: white;" readonly="readonly"/>
+                <a href="#" id="next" style="text-decoration: none;font-size: 17px;">></a>
+                <input id="pc" type="hidden" th:value="${pageInfo.getTotalpagecount()}"/><!--总页数-->
+            </td>
+        </tr>
+    </table>
+  <div class="opt_area_one">
+      <div id="dels_opt" style="cursor: pointer"><span class="a">删除所选</span></div>
+      <div id="add-opt" style="cursor: pointer"><span class="a">新增类型</span></div>
+  </div>
+
+</div>
+<script src="/lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+<script>
+    $(function () {
+
+
+        var curr=$("#curr").val();
+        if (curr==1){
+            $("#pre").hide(100);
+        }else{
+            $("#pre").show(100);
+        }
+        if($("#curr").val()==$("#pc").val()){
+            $("#next").hide(150);
+        }
+        $("#next").click(function () {
+            var curr=$("#curr").val();
+            window.location.href="protype?curr="+curr;
+        });
+        $("#pre").click(function () {
+            var curr=$("#curr").val();
+            curr--;
+            window.location.href="protype1?curr="+curr;
+        });
+
+
+
+        $(".promfy").click(function () {
+            window.location.href="/pro/topromdfy?id="+$(this).parent().parent().parent().find("#pid").text();
+        });
+
+        $(".prodel").click(function () {
+
+            if(confirm("确定要删除本条信息吗？")){
+                window.location.href="/pro/del?id="+$(this).parent().parent().parent().find("#pid").text();
+            }else{
+                alert("您取消了本次操作")
+            }
+
+        });
+
+
+
+        $("#add-opt").click(function () {
+            window.location.href="/pro/toadd?id=";
+        });
+
+        //删除所选功能
+        $("#dels_opt").click(function(){
+            var length=$("input[type='checkbox']:checked").length;
+            if(length==0){
+                alert("您没有选中任何条目哦！")
+            }else{
+                if(window.confirm("确定要删除选中的信息吗？")){
+                    var s="";
+                    $(".checks:checked").each(function(){
+                        s+=$(this).val()+',';
+                    });
+                    window.location.href="/pro/delall?ids="+s;
+                }
+            }
+
+        })
+    });
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+
+
+    </style>
+</head>
+<body>
+<div id="opt_area">
+        日收入:
+        <span th:if="${today!=null}"><span th:if="${today.getPrice()!=null}"  th:text="${today.getPrice()}" ></span></span>
+        <span th:if="${today==null}">0</span>
+        <hr />
+        本周收入:<span th:if="${tweek!=null}"><span th:if="${tweek.getPrice()!=null}"  th:text="${tweek.getPrice()}" ></span></span>
+        <span th:if="${tweek==null}">0</span>
+        <hr />
+        上周收入:<span th:if="${pweek!=null}"><span th:if="${pweek.getPrice()!=null}"  th:text="${pweek.getPrice()}" ></span></span>
+        <span th:if="${pweek==null}">0</span>
+        <hr />
+        本月收入:<span th:if="${tmonth!=null}"><span th:if="${tmonth.getPrice()!=null}"  th:text="${tmonth.getPrice()}" ></span></span>
+        <span th:if="${tmonth==null}">0</span>
+        <hr />
+        上月收入:<span th:if="${pmonth!=null}"><span th:if="${pmonth.getPrice()!=null}"  th:text="${pmonth.getPrice()}" ></span></span>
+        <span th:if="${pmonth==null}">0</span>
+        <hr />
+
+        本季度收入:<span th:if="${tseason!=null}"><span th:if="${tseason.getPrice()!=null}"  th:text="${tseason.getPrice()}" ></span></span>
+        <span th:if="${tseason==null}">0</span>
+        <hr />
+        上季度收入:<span th:if="${pseason!=null}"><span th:if="${pseason.getPrice()!=null}"  th:text="${pseason.getPrice()}" ></span></span>
+        <span th:if="${pseason==null}">0</span>
+        <hr />
+
+        本年收入:<span th:if="${tyear!=null}"><span th:if="${tyear.getPrice()!=null}"  th:text="${tyear.getPrice()}" ></span></span>
+        <span th:if="${tyear==null}">0</span>
+        <hr />
+        上年收入:<span th:if="${pyear!=null}"><span th:if="${pyear.getPrice()!=null}"  th:text="${pyear.getPrice()}" ></span></span>
+        <span th:if="${pyear==null}">0</span>
+        <hr />
+
+
+
+</div>
+
+<script src="img/jquery-1.8.3.min.js"></script>
+<script>
+
+
+</script>
+</body>
+</html>

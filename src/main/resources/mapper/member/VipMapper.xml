@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mh.member.mapper.VipMapper">
+    <resultMap id="VipMap" type="Vip">
+        <id column="id" property="id"></id>
+        <result column="vname" property="vname"></result>
+        <result column="vprice" property="vprice"></result>
+        <result column="describe" property="describe"></result>
+        <result column="createTime" property="createTime"></result>
+        <result column="modifyDate" property="modifyDate"></result>
+        <association property="vpackage" javaType="Vpackage">
+            <id column="pid" property="pid"></id>
+            <result column="pname" property="pname"></result>
+            <result column="price" property="price"></result>
+            <result column="creatDate" property="createDate"></result>
+            <result column="modifyDate" property="modifyDate"></result>
+            <result column="vipid" property="vipid"></result>
+        </association>
+    </resultMap>
+    <select id="getVipAndPackageList" resultMap="VipMap">
+        SELECT
+          v.`id`,
+          v.`vname`,
+          v.`vprice`,
+          v.`describe`,
+          v.`createTime`,
+          v.`modifyDate`,
+          p.pname,
+          p.`price`,
+          p.pid,
+          p.`createDate`,
+          p.`modifyDate`,
+          p.`vipid`
+        FROM
+          `chuangmeng`.`vip` v
+         LEFT JOIN package p ON v.`vtid`=p.`pid`
+         WHERE p.`istrue`=1
+         <if test="id != null and id > 0">
+             AND v.`id`=#{id}
+         </if>
+    </select>
+    <select id="getVipById" parameterType="int" resultType="int">
+        SELECT vtid FROM vip WHERE id=#{id}
+    </select>
+</mapper>

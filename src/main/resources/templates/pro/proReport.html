@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body{background: rgb(242,242,242);}
+        .protable td{height: 36.89px;}
+        .protable{
+            width: 1101px;
+            margin-top: 26px;
+            background: white;
+            text-align: center;
+            border-color: rgb(242,242,242);
+            position: relative;
+            top: 46px;
+        }
+        tr:hover{background: rgb(242,242,242);}
+        .opt_area{background: white;height: 300px;}
+        .year,.month,.prevmonth{
+            border: none;outline: none;
+            color: white;
+            height: 40px;width: 100px;
+            background: #00796B;
+            cursor: pointer;
+        }
+        .prevmonth:hover{opacity: 0.8;}
+        .month:hover{opacity: 0.8;}
+        .year:hover{opacity: 0.8;}
+        .aaa{
+            width: 310px;
+            margin-left: 9%;
+        }
+        .ooo{position: relative;top:60px;}
+    </style>
+</head>
+<body>
+<div class="opt_area">
+    <div class="ooo">
+        <div class="aaa">
+            <input type="button" class="month" value="本月"/>
+            <input type="button" class="prevmonth"value="上月"/>
+            <input type="button" class="year" value="本年"/>
+        </div>
+    </div>
+    <table border="1px" cellspacing="0" cellpadding="0"  align="center" class="protable">
+        <tr style="background: rgb(242,242,242);">
+            <td>序号</td>
+            <td>顾客</td>
+            <td>员工</td>
+            <td>产品</td>
+            <td>价格</td>
+            <td>时间</td>
+            <td>描述</td>
+        </tr>
+        <tr th:each="c,cuspayl:${proReport}">
+            <td th:text="${cuspayl.count}"></td>
+            <td th:text="${c.getCname()}"></td>
+            <td th:text="${c.getEmpname()}"></td>
+            <td th:text="${c.getProname()}"></td>
+            <td class="price" th:text="${c.getPrice()}"></td>
+            <td th:text="${c.getPaydate()}"></td>
+            <td th:text="${c.getPaydesc()}"></td>
+        </tr>
+        <tr>
+            <td colspan="7">卖出产品总计：<input style="width: 76px;border:none;" id="totalprice_y_m_d" readonly value="" /></td>
+
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>
+<script src="/lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+<script>
+
+    $(function () {
+        var price="0";
+        $(".price").each(function () {
+            price=parseInt($(this).text())+parseInt(price)+"RMB";
+        })
+        $("#totalprice_y_m_d").val(price);
+        $(".month").click(function () {
+            window.location.href="proReport?month=1";
+
+        });
+        $(".prevmonth").click(function () {
+            window.location.href="proReport?prevMonth=1";
+
+        });
+        $(".year").click(function () {
+            window.location.href="proReport?year=1";
+        });
+
+
+        var protableheight=parseInt($(".protable").height())+220;
+        $(".opt_area").height(protableheight+"px");
+    })
+</script>
+</body>
+</html>

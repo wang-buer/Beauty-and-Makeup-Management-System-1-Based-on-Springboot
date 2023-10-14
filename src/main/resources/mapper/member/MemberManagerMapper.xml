@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mh.member.mapper.MemberManagerMapper">
+    <select id="pageQuery" resultType="com.mh.member.entity.Customer">
+        SELECT
+          `cid`,
+          `cname`,
+          `age`,
+          `address`,
+          `phone`,
+          `birthday`,
+          `bodyfat`,
+          `fatmass`,
+          `weight`,
+          `stature`,
+          `bust`,
+          `hip`,
+          `waistline`,
+          `faceCount`,
+          `localdecrementCount`,
+          `massageCount`,
+          `cretate_date` createDate,
+          `update_date` updateDate
+        FROM
+          `chuangmeng`.`customer`
+          <where>
+              <if test="customer.cname != null">
+                  cname LIKE CONCAT('%',#{customer.cname},'%') AND
+              </if>
+              <if test="customer.age != null and customer.age >0">
+                   age=#{customer.age} AND
+              </if>
+              <if test="customer.address != null">
+                   address LIKE CONCAT('%',#{customer.address},'%') AND
+              </if>
+              <if test="customer.birthday != null and customer.birthday != ''">
+                   DATE_FORMAT(`birthday`,'%Y-%m-%d') = #{customer.birthday} AND
+              </if>
+                is_no=1
+          </where>
+            ORDER By cretate_date desc
+            <if test="pageBean != null">
+                LIMIT #{pageBean.page}, #{pageBean.limit}
+            </if>
+    </select>
+</mapper>

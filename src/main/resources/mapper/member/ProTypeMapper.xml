@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mh.member.mapper.ProTypeMapper">
+    <resultMap id="proTypeMap" type="ProTypes">
+        <id column="id" property="id" javaType="int"></id>
+        <result column="pname" property="name" javaType="string"></result>
+        <result column="desc" property="desc" javaType="string"></result>
+        <collection property="produces" ofType="Produces">
+            <id column="pid" property="id" javaType="int"></id>
+            <result column="name" property="name" javaType="string"></result>
+            <result column="num" property="num" javaType="int"></result>
+            <result column="price" property="price" javaType="double"></result>
+        </collection>
+    </resultMap>
+    <select id="getProduceList" resultMap="proTypeMap">
+        SELECT
+          pt.`id`,
+          pt.`name` pname,
+          pt.`desc` ,
+          p.`name`,
+          p.`num`,
+          p.`price`,
+          p.`id` pid
+        FROM
+          `chuangmeng`.`protype`  pt
+        LEFT JOIN produce p ON p.`type`=pt.`id`
+    </select>
+
+</mapper>

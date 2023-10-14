@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+    系统设置页面
+    1、打折率
+-->
+<head>
+    <meta charset="UTF-8">
+    <title>系统配置</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/lib/layui-v2.5.4/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+    <script src="/lib/layui-v2.5.4/layui.js" charset="utf-8"></script>
+    <script src="/projects/sys/systemConfiguration.js" charset="utf-8"></script>
+
+    <style>
+        .text{
+            margin-top:40px;
+            text-align:justify;
+            text-justify:auto;
+            display: inline-block;
+            text-indent: 2em;
+            font-size: 20px;
+            width:95%;
+            line-height:40px;
+
+        }
+        .InputBox{
+            display: inherit;
+            width: 100%;
+            padding-left: 10px;
+            height: 22px;
+        }
+    </style>
+</head>
+<body>
+    <div class="layui-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">打折设置</li>
+            <!--<li>代理奖励设置</li>
+            <li>代理级别设置</li>-->
+        </ul>
+
+        <div class="layui-tab-content" style="text-align: center;">
+
+            <!-- 打折设置 -->
+            <div class="layui-tab-item layui-show" style="margin: auto;width: 28%;">
+
+                <!--打折率-->
+                <div class="text">
+                    打折率：<input type="number"  min="0" step="0.01" name="MTopUpAmmount" required lay-verify="required"
+                           autocomplete="off" id="MTopUpAmmount" style="width: 100px;" class="layui-input InputBox"> %
+                </div>
+                <!-- 提交按钮 -->
+                <br/><button style="margin-top: 40px;" type="button" id="merchantsTopUp" class="layui-btn">提交</button>
+
+            </div>
+
+         <!--   &lt;!&ndash; 代理奖励设置 &ndash;&gt;
+            <div class="layui-tab-item" style="text-align: center;">
+
+                &lt;!&ndash; 普通代理奖励充值 &ndash;&gt;
+                <div class="text">
+                    普通代理发展代理现金奖励
+                    <input type="number"  min="0" step="0.01" id="generalAgentRate" name="generalAgentRate" required lay-verify="required"
+                                       autocomplete="off" style="width: 100px;" class="layui-input InputBox">%；
+                    发展代理赠送推荐码
+                    <input type="text" onkeyup="value=value.replace(/[^\d]/g, '')" id="generalAgentCode" name="generalAgentCode" required lay-verify="required"
+                                    autocomplete="off" style="width: 100px;" class="layui-input InputBox">个；
+                    发展商户奖励
+                    <input type="number"  min="0" step="0.01"  id="generalAgentCodeMoney" name="generalAgentCodeMoney" required lay-verify="required"
+                                 autocomplete="off" style="width: 100px;" class="layui-input InputBox">元；
+                    商户续充奖励金额
+                    <input type="number"  min="0" step="0.01"  id="generalAgentRates" name="generalAgentRates" required lay-verify="required"
+                           autocomplete="off" style="width: 100px;" class="layui-input InputBox">%
+                </div>
+
+                &lt;!&ndash; 金牌代理奖励充值 &ndash;&gt;
+                <div class="text">
+                    金牌代理发展代理现金奖励
+                    <input type="number"  min="0" step="0.01"  id="goldAgentsRate" name="goldAgentsRate" required lay-verify="required"
+                                       autocomplete="off" style="width: 100px;" class="layui-input InputBox">%；
+                    发展代理赠送推荐码
+                    <input type="text" onkeyup="value=value.replace(/[^\d]/g, '')"  id="goldAgentsCode" name="goldAgentsCode" required lay-verify="required"
+                                    autocomplete="off" style="width: 100px;" class="layui-input InputBox">个；
+                    发展商户奖励
+                    <input type="number"  min="0" step="0.01"  id="goldAgentsMoney" name="goldAgentsMoney" required lay-verify="required"
+                                 autocomplete="off" style="width: 100px;" class="layui-input InputBox">元；
+                    商户续充奖励金额
+                    <input type="number"  min="0" step="0.01"  id="goldAgentsRates" name="goldAgentsRates" required lay-verify="required"
+                                   autocomplete="off" style="width: 100px;" class="layui-input InputBox">%
+                </div>
+
+                &lt;!&ndash; 钻石代理奖励充值 &ndash;&gt;
+                <div class="text">
+                    钻石代理发展代理现金奖励
+                    <input type="number"  min="0" step="0.01"  id="diamondAgentRate" name="diamondAgentRate" required lay-verify="required"
+                                       autocomplete="off" style="width: 100px;" class="layui-input InputBox">%；
+                    发展代理赠送推荐码
+                    <input type="text"  onkeyup="value=value.replace(/[^\d]/g, '')"  id="diamondAgentCode" name="diamondAgentCode" required lay-verify="required"
+                                    autocomplete="off" style="width: 100px;" class="layui-input InputBox">个；
+                    发展商户奖励
+                    <input type="number"  min="0" step="0.01"  id="diamondAgentMoney" name="diamondAgentMoney" required lay-verify="required"
+                                 autocomplete="off" style="width: 100px;" class="layui-input InputBox">元；
+                    商户续充奖励金额
+                    <input type="number"  min="0" step="0.01"  id="diamondAgentRates" name="diamondAgentRates" required lay-verify="required"
+                           autocomplete="off" style="width: 100px;" class="layui-input InputBox">%
+                </div>
+
+                &lt;!&ndash; 提交按钮 &ndash;&gt;
+                <br/><button style="margin-top: 40px;" type="button" class="layui-btn" id="rewardEvent">提交</button>
+
+            </div>
+
+            &lt;!&ndash; 代理级别设置 &ndash;&gt;
+            <div class="layui-tab-item" style="text-align: center;">
+
+                &lt;!&ndash; 普通代理级别 &ndash;&gt;
+                <div class="text">
+                    普通代理激活金额
+                    <input  type="number"  min="0" step="0.01"  id="generalAgentAmountMoney" name="generalAgentAmountMoney" required lay-verify="required"
+                                   autocomplete="off" style="width: 100px;" class="layui-input InputBox">元；
+                    赠送推荐码
+                    <input type="text" onkeyup="value=value.replace(/[^\d]/g, '')" id="generalAgentCodesnums" name="generalAgentCodesnums" required lay-verify="required"
+                                autocomplete="off" style="width: 100px;" class="layui-input InputBox">个；
+                    赠送积分与现金
+                    <input type="text" onkeyup="value=value.replace(/[^\d]/g, '')"  id="generalAgentIntegRate" name="generalAgentIntegRate" required lay-verify="required"
+                                  autocomplete="off" style="width: 100px;" class="layui-input InputBox">%
+                </div>
+
+                &lt;!&ndash; 金牌代理级别 &ndash;&gt;
+                <div class="text">
+                    金牌代理激活金额
+                    <input type="number"  min="0" step="0.01"  id="goldAgentsAmountMoney" name="goldAgentsAmountMoney" required lay-verify="required"
+                                   autocomplete="off" style="width: 100px;" class="layui-input InputBox">元；
+                    赠送推荐码
+                    <input type="text" onkeyup="value=value.replace(/[^\d]/g, '')" id="goldAgentsCodesnums" name="goldAgentsCodesnums" required lay-verify="required"
+                           autocomplete="off" style="width: 100px;" class="layui-input InputBox">个；
+                    赠送积分与现金
+                    <input type="text" onkeyup="value=value.replace(/[^\d]/g, '')"  id="goldAgentsIntegRate" name="goldAgentsIntegRate" required lay-verify="required"
+                                  autocomplete="off" style="width: 100px;" class="layui-input InputBox">%
+                </div>
+
+                &lt;!&ndash; 钻石代理级别 &ndash;&gt;
+                <div class="text">
+                    钻石代理激活金额
+                    <input type="number"  min="0" step="0.01"  id="diamondAgentAmountMoney" name="diamondAgentAmountMoney" required lay-verify="required"
+                           autocomplete="off" style="width: 100px;" class="layui-input InputBox">元；
+                    赠送推荐码
+                    <input type="text" onkeyup="value=value.replace(/[^\d]/g, '')" id="diamondAgentCodesnums" name="diamondAgentCodesnums" required lay-verify="required"
+                                autocomplete="off" style="width: 100px;" class="layui-input InputBox">个；
+                    赠送积分与现金
+                    <input type="text" onkeyup="value=value.replace(/[^\d]/g, '')"  id="diamondAgentIntegRate" name="diamondAgentIntegRate" required lay-verify="required"
+                           autocomplete="off" style="width: 100px;" class="layui-input InputBox">%
+                </div>
+
+                &lt;!&ndash; 提交按钮 &ndash;&gt;
+                <br/><button style="margin-top: 40px;" type="button" id="agentLevel" class="layui-btn">提交</button>
+            </div>
+-->
+        </div>
+    </div>
+</body>
+</html>

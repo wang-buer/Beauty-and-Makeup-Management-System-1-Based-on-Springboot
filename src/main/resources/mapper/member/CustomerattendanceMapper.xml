@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mh.member.mapper.CustomerattendanceMapper">
+  <select id="getCustomerattendanceList" parameterType="int" resultType="Customerattendance">
+        SELECT
+          c.`id`,
+          c.`cusid`,
+          c.`indate`,
+          c.`empid`,
+          c.`isin`,
+          c.`whyNo`,
+          c.`bodyfat`,
+          c.`fatmass`,
+          c.`weight`,
+          c.`stature`,
+          c.`bust`,
+          c.`hip`,
+          c.`waistline`,
+          cs.`cname`,
+          e.`empname`
+        FROM
+          `chuangmeng`.`customerattendance` c
+         LEFT JOIN customer cs ON cs.`cid`=c.`cusid`
+         LEFT JOIN emp e ON e.`id`=c.`empid`
+         WHERE c.`cusid`=#{id}
+         <if test="page != null and limit != null">
+            LIMIT #{page}, #{limit} ;
+         </if>
+  </select>
+    <insert id="addCustomerattendance" parameterType="Customerattendance">
+        INSERT INTO `chuangmeng`.`customerattendance` (
+              `id`,
+              `cusid`,
+              `indate`,
+              `empid`,
+              `isin`,
+              `whyNo`,
+              `bodyfat`,
+              `fatmass`,
+              `weight`,
+              `stature`,
+              `bust`,
+              `hip`,
+              `waistline`
+            )
+            VALUES
+              (
+                #{id},
+                #{cusid},
+                #{indate},
+                #{empid},
+                #{isin},
+                #{whyNo},
+                #{bodyfat},
+                #{fatmass},
+                #{weight},
+                #{stature},
+                #{bust},
+                #{hip},
+                #{waistline}
+              ) ;
+
+    </insert>
+
+
+    <insert id="addCheckingInfo">
+        INSERT INTO `chuangmeng`.`customerattendance` (
+          `cusid`,
+          `indate`,
+          `empid`,
+          `isin`,
+          `whyNo`
+        )
+        VALUES
+          (
+            ${cid},
+            now(),
+            #{uid},
+            #{isin},
+            #{whyNo}
+          )
+    </insert>
+
+    <select id="selectCheckingInfo" parameterType="int" resultType="int">
+        SELECT
+          `id`
+        FROM
+          `chuangmeng`.`customerattendance`
+        WHERE cusid=#{cid} AND DATE(indate)= DATE(CURDATE())
+    </select>
+
+    <select id="selectCheckingByid" parameterType="int" resultType="Customerattendance">
+                SELECT
+                    `id`,
+                    `cusid`,
+                    `indate`,
+                    `empid`,
+                    `isin`,
+                    `whyNo`,
+                    `bodyfat`,
+                    `fatmass`,
+                    `weight`,
+                    `stature`,
+                    `bust`,
+                    `hip`,
+                    `waistline`
+                FROM
+                    `chuangmeng`.`customerattendance`
+                WHERE cusid=#{id} AND isin=1
+                ORDER BY indate DESC
+                LIMIT 1
+    </select>
+
+    <select id="getEchartsData" resultType="Echarts">
+        SELECT t.name,t.cusid,SUM(a) a,SUM(b) b,SUM(c) c,SUM(d) d,SUM(e) e,SUM(f) f
+        FROM  (
+
+        (	SELECT
+        c.cusid cusid,co.cname `name`,
+        COUNT(c.id) a, -- 1 1-5
+        0 b, -- 2 6-10
+        0  c, -- 3 11-15
+        0 d, -- 4 16-20
+        0 e, -- 5 21-25
+        0 f -- 6 26-30
+        FROM
+        `chuangmeng`.`customerattendance` c
+        LEFT JOIN `customer` co ON co.cid=c.cusid AND co.is_no=1
+        WHERE MONTH(c.indate)=#{month} AND (DAY(c.indate)&lt;=5 AND DAY(c.indate)&gt;=1)
+        GROUP BY c.cusid
+        )
+        UNION
+        (
+        SELECT
+        c.cusid cusid,co.cname `name`,
+        0 a, -- 1 1-5
+        COUNT(c.id) b, -- 2 6-10
+        0 c, -- 3 11-15
+        0 d, -- 4 16-20
+        0 e, -- 5 21-25
+        0 f -- 6 26-30
+        FROM
+        `chuangmeng`.`customerattendance` c
+        LEFT JOIN `customer` co ON co.cid=c.cusid AND co.is_no=1
+        WHERE MONTH(c.indate)=#{month} AND (DAY(c.indate)&lt;=10 AND DAY(c.indate)&gt;=6)
+        GROUP BY c.cusid
+        )
+        UNION
+        (	SELECT
+        c.cusid cusid,co.cname `name`,
+        0 a, -- 1 1-5
+        0 b, -- 2 6-10
+        COUNT(c.id)  c, -- 3 11-15
+        0 d, -- 4 16-20
+        0 e, -- 5 21-25
+        0 f -- 6 26-30
+        FROM
+        `chuangmeng`.`customerattendance` c
+        LEFT JOIN `customer` co ON co.cid=c.cusid AND co.is_no=1
+        WHERE MONTH(c.indate)=#{month} AND (DAY(c.indate)&lt;=15 AND DAY(c.indate)&gt;=11)
+        GROUP BY c.cusid
+        )
+        UNION
+        (
+        SELECT
+        c.cusid cusid,co.cname `name`,
+        0 a, -- 1 1-5
+        0 b, -- 2 6-10
+        0 c, -- 3 11-15
+        COUNT(c.id) d, -- 4 16-20
+        0 e, -- 5 21-25
+        0 f -- 6 26-30
+        FROM
+        `chuangmeng`.`customerattendance` c
+        LEFT JOIN `customer` co ON co.cid=c.cusid AND co.is_no=1
+        WHERE MONTH(c.indate)=#{month} AND (DAY(c.indate)&lt;=20 AND DAY(c.indate)&gt;=16)
+        GROUP BY c.cusid
+        )
+        UNION
+        (	SELECT
+        c.cusid cusid,co.cname `name`,
+        0 a, -- 1 1-5
+        0 b, -- 2 6-10
+        0  c, -- 3 11-15
+        0 d, -- 4 16-20
+        COUNT(c.id) e, -- 5 21-25
+        0 f -- 6 26-30
+        FROM
+        `chuangmeng`.`customerattendance` c
+        LEFT JOIN `customer` co ON co.cid=c.cusid AND co.is_no=1
+        WHERE MONTH(c.indate)=#{month} AND (DAY(c.indate)&lt;=25 AND DAY(c.indate)&gt;=21)
+        GROUP BY c.cusid
+        )
+        UNION
+        (
+        SELECT
+        c.cusid cusid,co.cname `name`,
+        0 a, -- 1 1-5
+        0 b, -- 2 6-10
+        0 c, -- 3 11-15
+        0 d, -- 4 16-20
+        0 e, -- 5 21-25
+        COUNT(c.id) f -- 6 26-30
+        FROM
+        `chuangmeng`.`customerattendance` c
+        LEFT JOIN `customer` co ON co.cid=c.cusid AND co.is_no=1
+        WHERE MONTH(c.indate)=#{month} AND (DAY(c.indate)&lt;=30 AND DAY(c.indate)&gt;=26)
+        GROUP BY c.cusid
+        )
+        ) t
+        GROUP BY t.cusid
+    </select>
+</mapper>

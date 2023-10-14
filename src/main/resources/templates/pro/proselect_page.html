@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        input{outline: none;text-align: center;}
+        input[type=text],input[type=number]{width: 260px;height: 30px;}
+        textarea{    height: 243px;outline: none;
+resize: none;
+            width: 607px;
+        }
+        .ppp{width: 768px;margin: auto;}
+        .sub_add{width: 66.66px;height: 30px;border: none;color: white;background: #00796B;margin: auto;}
+        .sub_div{
+            margin: auto;
+            width: 66.66px;}
+    </style>
+</head>
+<body>
+
+<div class="ppp">
+    <input type="hidden"  id="name" th:value="${produce.name}" />
+    <input type="hidden"  name="id" th:value="${produce.id}" />
+    <p>产品名称：<input type="text" name="name" th:value="${produce.name}" required/><span style="color: red;font-size: 9px;" id="pnameverify" ></span>
+        产品类型：
+        <select  name="type" style="height:36px;width: 261px;margin-left: -4px;" >
+            <option th:each="pt,protypeState:${proTypeList}" th:value="${pt.id}" th:text="${pt.name}" th:title="${pt.desc}"></option>
+        </select>
+    </p>
+    <p>产品数量：<input type="number" name="num" th:value="${produce.getNum()}" min="0"/>
+        产品价格：<input type="text" name="price" th:value="${produce.getPrice()}" min="1"/></p>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;描  述：<textarea name="desc" th:value="${produce.getDesc()}" th:text="${produce.getDesc()}"></textarea>
+    <div class="sub_div"><input class="sub_add" type="button" value="返回"/></div>
+</div>
+
+<script src="/lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+<script>
+    $(function () {
+        $("[name='type']").width($("[name='name']").width()+"px");
+
+        $("[name='num']").width($("[name='name']").width()+"px");
+        $(".sub_add").click(function () {
+            window.history.go(-1);
+        });
+    });
+
+</script>
+</body>
+</html>

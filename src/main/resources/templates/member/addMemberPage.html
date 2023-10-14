@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>增加顾客</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/lib/layui-v2.5.4/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+    <script src="/lib/layui-v2.5.4/layui.js" charset="utf-8"></script>
+    <style>
+        .layui-form-item{
+            margin-bottom: 15px;
+            clear: both;
+            *zoom: 1;
+            /*border: 1px solid;*/
+            display: inline-block;
+            width: 31%;
+        }
+        .layui-btn{
+            width: 12%;
+            border-radius: 12px;
+        }
+        .layui-form-label{
+            width: 113px;
+        }
+    </style>
+</head>
+<body>
+<form lay-filter="updateGoodsForm" id="addFormSub" class="layui-form" enctype="multipart/form-data">
+    <div class="layui-form-item" style="width: 68%;
+    margin: 26px auto;">
+        <label  class="layui-form-label" style="display: inline-block;
+    width: 9%;">会员类型</label>
+        <div class="layui-input-inline" style="width: 85%;
+    display: inline-block;">
+            <input type="radio" th:each="v,vstart:${vip}" name="vipid" th:value="${v.getId()}" th:title="${v.getVname()}"/>
+        </div>
+
+    </div>
+    <fieldset class="layui-elem-field" style="
+                                        margin-top: -18px;
+                                        margin-bottom: 30px;
+                                        margin-left: 38px;"
+    >
+        <legend>赠送说明</legend>
+        <div class="layui-field-box">
+            <p th:each="vi, index : ${vip}" style="margin-bottom: 1%">
+                <span th:text="${index.count}"></span>.&nbsp;<span th:text="${vi.getVname()}"></span>&nbsp;&nbsp;
+                赠送套餐：<span th:text="${vi.getVpackage().getPname()}"></span>
+                (包含产品：<span th:each="p, i: ${vi.getVpackage().getProduces()}"><span th:text="${p.getName()}"></span>&nbsp;</span>)
+                &nbsp;&nbsp;套餐价值：￥<span th:text="${vi.getVpackage().getPrice()}"></span><br/>
+                说明：<span th:text="${vi.getDescribe()}"></span><br/>
+            </p>
+        </div>
+    </fieldset>
+    <div class="layui-form-item">
+        <label class="layui-form-label">顾客姓名</label>
+        <div class="layui-input-inline">
+            <input type="text" name="cname" lay-verify="cname" placeholder="请输入" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">身高(厘米)</label>
+        <div class="layui-input-inline">
+            <input  type="number" name="stature" lay-verify="stature" placeholder="请输入" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">年龄</label>
+        <div class="layui-input-inline">
+            <input  type="number" name="age" lay-verify="age" placeholder="请输入" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">体重(斤)</label>
+        <div class="layui-input-inline">
+            <input type="number"  name="weight" lay-verify="weight" placeholder="请输入" value="0" class="layui-input">
+        </div>
+    </div>
+
+    <!--<div class="layui-form-item">
+        <label class="layui-form-label">性别</label>
+        <div class="layui-input-block">
+            <input type="radio" name="sex" value="男" title="男">
+            <input type="radio" name="sex" value="女" title="女" checked>
+        </div>
+    </div>-->
+    <div class="layui-form-item">
+        <label class="layui-form-label">生日</label>
+        <div class="layui-input-inline">
+            <input type="text" name="birthday" id="birthday" lay-verify="date" placeholder="yyyy-MM-dd" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">手机号码</label>
+        <div class="layui-input-inline">
+            <input type="tel" name="phone" lay-verify="required|phone"  class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">地址</label>
+        <div class="layui-input-inline">
+            <input   name="address" class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">胸围</label>
+        <div class="layui-input-inline">
+            <input  type="number" class="layui-input" name="bust" lay-verify="weight"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">腰围</label>
+        <div class="layui-input-inline">
+            <input type="number" class="layui-input"  name="waistline" lay-verify="weight"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">臀围</label>
+        <div class="layui-input-inline">
+            <input type="number" class="layui-input" name="hip" lay-verify="weight"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">脂肪率(%)</label>
+        <div class="layui-input-inline">
+            <input type="number" class="layui-input" name="bodyfat" lay-verify="weight"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">脂肪量</label>
+        <div class="layui-input-inline">
+            <input type="number" class="layui-input" name="fatmass" lay-verify="weight"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">面部护理剩余次数</label>
+        <div class="layui-input-inline">
+            <input type="number" class="layui-input" value="0" name="faceCount" lay-verify="num"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">局减剩余次数</label>
+        <div class="layui-input-inline">
+            <input type="number" class="layui-input" value="0" name="localdecrementCount" lay-verify="num"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">按摩剩余次数</label>
+        <div class="layui-input-inline">
+            <input type="number" class="layui-input" value="0" name="massageCount" lay-verify="num"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">办理价格</label>
+        <div class="layui-input-inline">
+            <input class="layui-input" name="price" lay-verify="price"/>
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-form-text" style="display: block; width: 89%;">
+        <label class="layui-form-label">描述</label>
+        <div class="layui-input-block" style="margin-left: 13%;">
+            <textarea name="paydesc" placeholder="请输入内容" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-btn-group" style="display: block; margin-left: 28%;">
+        <a class="layui-btn" style="margin-right: 20px;" href="/member/memberManagerPage">返回</a>
+        <button type="reset" class="layui-btn">重置</button>
+        <button type="submit" class="layui-btn" lay-submit="" lay-filter="save">保存</button>
+    </div>
+</form>
+<script type="text/javascript" src="/projects/member/addMemberPage.js"></script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mh.product.mapper.ProMapper">
+<delete id="truncate">
+    TRUNCATE TABLE intogoods;
+</delete>
+    <select id="getProList"  resultType="ProType">
+        SELECT
+        `id`,
+        `name`,
+        `desc`
+        FROM
+        `chuangmeng`.`protype`
+
+        <if test="typeId!=null and typeId!=''">
+
+            and e.type=#{typeId}
+        </if>
+    </select>
+    <select id="getProList1"  resultType="ProType">
+        SELECT
+        `id`,
+        `name`,
+        `desc`
+        FROM
+        `chuangmeng`.`protype`
+    </select>
+    <select id="getPtCount" resultType="int">
+        SELECT
+        COUNT(1)
+        FROM
+        `chuangmeng`.`protype`
+        LIMIT 0, 1000
+    </select>
+    <select id="getProTypeById" resultType="ProType">
+
+        SELECT
+  `id`,
+  `name`,
+  `desc`
+FROM
+  `chuangmeng`.`protype`
+WHERE id=#{id}
+    </select>
+    <update id="updataById" parameterType="ProType">
+        UPDATE
+        `chuangmeng`.`protype`
+        <trim prefix="set" suffixOverrides="," suffix="  WHERE `id`=#{id}">
+            <if test="name!=null">
+                `name`=#{name},
+            </if>
+            <if test="desc!=null">
+                `desc`=#{desc},
+            </if>
+        </trim>
+
+    </update>
+    <delete id="delById">
+        DELETE
+FROM
+  `chuangmeng`.`protype`
+WHERE `id` = #{id} ;
+    </delete>
+    <insert id="addProType" parameterType="ProType">
+        INSERT INTO `chuangmeng`.`protype` ( `name`, `desc`)
+VALUES
+  ( #{name}, #{desc}) ;
+    </insert>
+    <!--产品类型添加验证重复-->
+<select id="vTypeName" resultType="int">
+    SELECT
+  COUNT(1)
+FROM
+  `chuangmeng`.`protype`
+WHERE `name`=#{typeName}
+
+</select>
+    <!--产品功能Mapper-->
+    <select id="getProduceList" resultType="Produce">
+        SELECT
+        `id`,
+        `name`,
+        `num`,
+        `type`,
+        `price`,
+        `desc`
+        FROM
+        `chuangmeng`.`produce`
+        <if test="name!=null">
+            WHERE `name` like concat('%',#{name},'%');
+        </if>
+    </select>
+    <select id="getProduceCount" resultType="int">
+        SELECT COUNT(1) FROM produce
+        <if test="name!=null">
+        WHERE `name` like concat('%',#{name},'%');
+        </if>
+    </select>
+    <select id="verfiyProduceName" resultType="int">
+        SELECT
+
+  COUNT(1)
+
+FROM
+  `chuangmeng`.`produce`
+WHERE `name`=#{name}
+
+    </select>
+
+    <insert id="addproduce" parameterType="Produce">
+        INSERT INTO `chuangmeng`.`produce` (`name`, `num`, `type`, `price`,`desc`)VALUES(#{name}, #{num}, #{type},#{price},#{desc}) ;
+    </insert>
+    <select id="getOneProduceById" resultType="Produce">
+        SELECT
+  `id`,
+  `name`,
+  `num`,
+  `type`,
+  `price`,
+  `desc`
+FROM
+  `chuangmeng`.`produce`
+WHERE id=#{pid}
+
+    </select>
+    <update id="updateProduceById" parameterType="Produce">
+        UPDATE
+        `chuangmeng`.`produce`
+        <trim prefix="set" suffixOverrides="," >
+            <if test="name!=null">
+                `name`=#{name},
+            </if>
+            <if test="num!=null">
+                `num`=#{num},
+            </if>
+            <if test="type!=null">
+                `type`=#{type},
+            </if>
+            <if test="price!=null">
+                `price`=#{price},
+            </if>
+            <if test="desc!=null">
+                `desc`=#{desc},
+            </if>
+        </trim>
+        WHERE `id`=#{id}
+    </update>
+    <delete id="delproduceById">
+        DELETE
+FROM
+  `chuangmeng`.`produce`
+WHERE `id` = #{pid} ;
+    </delete>
+
+</mapper>

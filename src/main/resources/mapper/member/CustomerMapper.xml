@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mh.member.mapper.CustomerMapper">
+    <insert id="addCustomer" parameterType="Customer" useGeneratedKeys="true" keyColumn="cid" keyProperty="cid">
+
+            INSERT INTO `chuangmeng`.`customer` (
+              `cid`,
+              `cname`,
+              `age`,
+              `address`,
+              `phone`,
+              `birthday`,
+              `bodyfat`,
+              `fatmass`,
+              `weight`,
+              `stature`,
+              `bust`,
+              `hip`,
+              `waistline`,
+              `faceCount`,
+              `LocaldecrementCount`,
+              `massageCount`,
+              `cretate_date`,
+              `update_date`
+            )
+            VALUES
+              (
+                null ,
+               #{cname},
+               #{age},
+               #{address},
+               #{phone},
+               #{birthday},
+               #{bodyfat},
+               #{fatmass},
+               #{weight},
+               #{stature},
+               #{bust},
+               #{hip},
+               #{waistline},
+               #{faceCount},
+               #{localdecrementCount},
+               #{massageCount},
+               #{createDate},
+               #{updateDate}
+              ) ;
+
+    </insert>
+
+    <update id="updateById" parameterType="int">
+            UPDATE
+              `chuangmeng`.`customer`
+            SET
+              `is_no` = 0
+            WHERE `cid` = #{id} ;
+    </update>
+    <insert id="addCustomerEmp" parameterType="int">
+        INSERT INTO `chuangmeng`.`customer_emp` (`id`, `empid`, `cusid`)
+        VALUES
+          (null, #{eid}, #{cid}) ;
+    </insert>
+    <select id="getCustomerById" parameterType="int" resultType="Customer">
+        SELECT
+          `cid`,
+          `cname`,
+          `age`,
+          `address`,
+          `phone`,
+          `birthday`,
+          `bodyfat`,
+          `fatmass`,
+          `weight`,
+          `stature`,
+          `bust`,
+          `hip`,
+          `waistline`,
+          `faceCount`,
+          `LocaldecrementCount` localdecrementCount,
+          `massageCount`,
+          `cretate_date` createDate,
+          `update_date`
+        FROM
+          `chuangmeng`.`customer`
+        WHERE cid=#{id}
+    </select>
+
+    <select id="operating" resultType="CustomerEmp" parameterType="int">
+        SELECT
+          `id`,
+          `empid`,
+          `cusid`
+        FROM
+          `chuangmeng`.`customer_emp`
+        WHERE empid=#{id} AND cusid=#{cid}
+    </select>
+
+    <update id="updateCustomer" parameterType="Customer">
+        UPDATE
+          `chuangmeng`.`customer`
+        SET
+          `cid` = #{cid},
+          `cname` = #{cname},
+          `age` = #{age},
+          `address` = #{address},
+          `phone` = #{phone},
+          `birthday` = #{birthday},
+          `bodyfat` = #{bodyfat},
+          `fatmass` = #{fatmass},
+          `weight` = #{weight},
+          `stature` = #{stature},
+          `bust` = #{bust},
+          `hip` = #{hip},
+          `waistline` = #{waistline},
+          `faceCount` = #{faceCount},
+          `LocaldecrementCount` = #{localdecrementCount},
+          `massageCount` = #{massageCount},
+          `cretate_date` = #{createDate},
+          `update_date` = #{updateDate}
+        WHERE `cid` = #{cid}
+    </update>
+</mapper>

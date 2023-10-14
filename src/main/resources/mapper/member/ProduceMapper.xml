@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mh.member.mapper.ProduceMapper">
+    <select id="getProduceList" resultType="Produces" parameterType="int">
+        SELECT
+          pr.`id`,
+          pr.`name`,
+          pr.`num`,
+          pr.`type`,
+          pr.`price`
+        FROM
+          `chuangmeng`.`produce` pr
+          RIGHT JOIN `pagepro` pa ON pa.`produceid`=pr.`id`
+        <where>
+            <if test="id!=null">
+                pa.`packageid` =#{id}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateRepertory" parameterType="Produce">
+        <foreach collection="array" item="item">
+            <if test="item.name != null and item.name != '' ">
+                UPDATE
+                `chuangmeng`.`produce`
+                SET
+                `num` = num-#{item.num}
+                WHERE `name`=#{item.name};
+            </if>
+        </foreach>
+    </update>
+</mapper>

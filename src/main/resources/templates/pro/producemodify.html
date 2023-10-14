@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/lib/layui-v2.5.4/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+
+    <style>
+        input{outline: none}
+        /*input[name='name'],input[name='type'],input[name='price']{width: 203px;height: 33px;!*text-align: center;*!}*/
+        form{
+            margin: auto;
+            width: 674px;
+
+        }
+        .ccc{width: 237px;margin: auto;    margin-top: 26px;}
+        input[type=submit],input[type=reset],input[type=button]{
+            width: 111.38px;height: 38px;background: rgb(0,150,136);border:  none;color: white;
+        }
+        input[type=submit]:hover{opacity: 0.9; cursor: pointer;}
+        input[type=reset]:hover{opacity: 0.9;cursor: pointer;}
+        input[type=button]:hover{opacity: 0.9;cursor: pointer;}
+        textarea{    width: 493px;
+            height: 248px;resize: none;outline: none;}
+        .layui-form-select .layui-input {
+            padding-right: 0px;
+            cursor: pointer;
+        }
+        .layui-inline{
+            margin-top: 3%;
+        }
+    </style>
+
+        </head>
+<body>
+<form action="/pro/modifyproducesave" class="layui-form" >
+    <input type="hidden"  id="name" th:value="${produce.name}" />
+    <input type="hidden"  name="id" th:value="${produce.id}" />
+    <input type="hidden" name="prices" th:value="${produce.price}">
+    <div class="layui-inline">
+        <label class="layui-form-label">产品名称</label>
+        <div class="layui-input-inline">
+            <input type="tel" name="name" th:value="${produce.name}" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">产品类型</label>
+        <div class="layui-input-inline">
+            <select name="type" lay-search="">
+                <option th:each="pt,protypeState:${proTypeList}" th:value="${pt.id}" th:text="${pt.name}"  th:if="${pt.id==produce.type}" selected></option>
+                <option th:each="pt,protypeState:${proTypeList}" th:if="${pt.id!=produce.type}" th:value="${pt.id}" th:text="${pt.name}" ></option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">产品数量</label>
+        <div class="layui-input-inline">
+            <input type="number" name="num" th:value="${produce.getNum()}" min="0" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">产品价格</label>
+        <div class="layui-input-inline">
+            <input type="text" name="price" th:value="${produce.getPrice()}" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text" style="margin-top: 3%;width: 93%;">
+        <label class="layui-form-label">描  述：</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入内容" name="desc"  th:text="${produce.getDesc()}" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="ccc">
+        <input type="button"  onclick="history.go(-1)" value="返回"/>
+        <input class="sub_add" type="submit" value="保存修改"/>&nbsp;
+<!--        <input type="reset" id="reset" value="重置"/>-->
+    </div>
+</form>
+<script src="/lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+<script>
+   $(function () {
+        /*$("[name='type']").width($("[name='name']").width()+"px");
+        $("[name='num']").width($("[name='name']").width()+"px");
+        $("[name='name']").blur(function () {
+            if($("[name='name']").val()==$("#name").val()){
+            }else{
+                $.getJSON("verifyProName?name="+$("[name='name']").val(),function (data) {
+                    if($.parseJSON(data)==true){
+                        $("#sub").attr("disabled", false);
+                        $("#pnameverify").hide(600)
+                    }else if($.parseJSON(data)==false){
+                        $("#sub").attr("disabled", true);
+                        $("#pnameverify").text("此产品已经存在不能重复添加");
+                        $("#pnameverify").show(600);
+                    }else{
+                    }
+                });
+
+            }
+
+        });*/
+
+        $("input[name=price]").blur(function () {
+            var reg = /((^[1-9]\d*)|^0)(\.\d{0,2}){0,1}$/;
+            if (!reg.test($("input[name=price]").val())){
+                $("input[name=price]").val( $("input[name=prices]").val())
+                layer.alert("价格输入错误！");
+            }
+        });
+    });
+
+</script>
+<script src="/lib/layui-v2.5.4/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , laydate = layui.laydate;
+        form.render(); //更新全部
+    });
+</script>
+</body>
+</html>

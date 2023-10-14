@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>员工管理页面</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/lib/layui-v2.5.4/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+    <script src="/lib/layui-v2.5.4/layui.js" charset="utf-8"></script>
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+
+        <fieldset class="layui-elem-field layuimini-search">
+            <legend>搜索信息</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <form class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">员工姓名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="empname" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">职位</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="emptype" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <a class="layui-btn" lay-submit="" lay-filter="data-search-btn">搜索</a>
+                        </div>
+                    </div>
+                    <input type="hidden" name="login" th:value="${session.user.login}">
+                    <input type="hidden" name="empRattendance" th:value="${result.info}">
+
+                </form>
+            </div>
+        </fieldset>
+
+        <div class="layui-btn-group">
+<!--            <button class="layui-btn data-add-btn">查看业绩</button>-->
+        </div>
+
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+
+        <div id="edit-main" style="display: none;margin-top: 20px">
+            <form class="layui-form" id="edit-form" lay-filter="edit-form" action="">
+                <div class="layui-form-item">
+                    <label class="layui-form-label" style="width: 100px">姓名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="empname" required style="width: 240px" lay-verify="required"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label" style="width: 100px">工作时间</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="workDate" required style="width: 240px" lay-verify="identity"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label" style="width: 100px">职位</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="emptype" required style="width: 240px" lay-verify="identity"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div id="unSigned" style="display: none;margin-top: 20px">
+            <form class="layui-form" action="">
+                <div class="layui-form-item" style="    margin-left: -7%;
+    margin-top: 15%;">
+                    <label class="layui-form-label" style="width: 100px">原因</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="whyNo" required style="width: 240px" lay-verify="required"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item" style="margin-top: 13%;
+    margin-left: 12%;">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="unSign-data-search-btn">提交</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <script type="text/html" id="currentTableBar">
+
+        </script>
+        <script type="text/javascript" th:inline="javascript" src="/projects/emp/empMaanagerPage.js"></script>
+    </div>
+</div>
+</body>
+</html>

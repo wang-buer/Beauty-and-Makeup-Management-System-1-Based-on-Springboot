@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" charset="UTF-8">
+
+<head>
+    <meta charset="UTF-8">
+    <title>产品类型修改页</title>
+</head>
+<style>
+    body{background: rgb(242,242,242)}
+    .center{
+        margin: auto;
+        height: 251px;
+        width: 415px;
+        margin-top: 84px;
+    }
+    .tn{height: 41px;
+        width: 407px;
+        border-radius: 10px;
+    }
+    #sub{
+        margin-left: 39px;
+        border: none;
+        width: 72px;
+        height: 32px;
+        border-radius: 12px;
+        background: rgba(0,150,136);
+        color: white;
+    }
+    .reset{    margin-left: 168px;
+        border: none;
+        width: 72px;
+        height: 32px;
+        border-radius: 12px;
+        background: rgba(255,87,34);
+         color: white;
+    }
+    input{outline: none}
+</style>
+<body>
+<div class="center">
+
+    <form action="/pro/addsave">
+        <p>类型名称<input style="text-align:center"  id="typename" type="text" name="name" class="tn" required/><span id="vname" style="display: none;color: red;"></span></p>
+        <p>类型描述<input type="text"  name="desc" class="tn" style="text-align:center" /></p>
+        <input type="submit"  id="sub" value="提交" />
+        <input type="reset" value="重置" class="reset"  style="margin-left: 149px;"/>
+    </form>
+</div>
+<script src="/lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+<script>
+    $(function () {
+        $("#typename").blur(function () {
+            $.get("protypeValid?name="+$(this).val(),function (data) {
+                if(data==true){
+                    $("#vname").hide(600);
+                    $("#sub").attr("disabled", false);
+                }else if(data==false){
+                    $("#vname").text("此产品已经存在不能重复添加");
+                    $("#vname").show(600);
+                    $("#sub").attr("disabled", true);
+                }else{
+                    $("#sub").attr("disabled", true);
+                }
+            });
+        });
+    })
+
+</script>
+</body>
+</html>

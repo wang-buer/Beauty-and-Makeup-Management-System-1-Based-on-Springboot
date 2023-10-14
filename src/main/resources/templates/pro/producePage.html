@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        body{background: rgb(242,242,242);}
+        .protable td{height: 36.89px;}
+        .protable{
+            width: 1101px;
+            margin-top: 26px;
+            background: white;
+            text-align: center;
+            border-color: rgb(242,242,242);
+        }
+
+        [name=cname]{
+            height: 30px;
+            border-radius: 3px;
+            margin-left: 10px;
+            outline: none;
+        }
+        .produce_select_form{
+            width: 300px;
+            height: 32px;
+            padding-top: 49px;
+            padding-left: 98px;
+
+        }
+        .sel_produce{
+            height: 32px;
+            border: none;
+            background: rgb(0,150,136);
+            color: white;
+
+        }
+        .add_produce_button{
+
+            background: rgb(0,150,136);
+            height: 30px;
+            width: 100px;
+            text-align: center;
+            border-radius: 3px;
+            margin-left: 99px;
+            margin-top: 17px;
+            font-size: 14px;
+
+        }
+        .add_produce_button a{
+            color: white;
+            text-decoration: none;
+            position: relative;
+            top: 4px;
+        }
+        tr:hover{background: rgb(242,242,242);}
+        .optarea{width: 1299px;background: white;margin-top: 18px;}
+        .a_href{
+            background: rgb(0,150,136);
+            width: 34px;
+            height: 22px;
+            float: left;
+            margin-left: 13px;
+        }
+
+        .a_href1{
+            background: rgba(255,87,34);
+            width: 34px;
+            height: 22px;
+            float: left;
+            margin-left: 13px;
+        }
+        .a_href2{
+            background-color: #1E9FFF;
+            width: 34px;
+            height: 22px;
+            float: left;
+            margin-left: 13px;
+        }
+        .a_href a{position: relative;
+            text-decoration: none;
+            color: white;
+            font-size: 11px;
+            vertical-align: middle;
+            top: -2px;}
+        .a_href1 a{position: relative;
+            text-decoration: none;
+            color: white;
+            font-size: 11px;
+            vertical-align: middle;
+            top: -2px;}
+        .a_href2 a{position: relative;
+            text-decoration: none;
+            color: white;
+            font-size: 11px;
+            vertical-align: middle;
+            top: -2px;}
+        input{outline: none}
+    </style>
+</head>
+<body>
+<div class="optarea">
+       <form action="" class="produce_select_form">
+           产品名称<input name="cname"  th:value="${proname}"/>
+           <input  class="sel_produce" type="button"  value="查询"/>
+       </form>
+       <div class="add_produce_button"style="background:rgb(0,150,136);height: 30px;width: 100px;"><a href="addproductPage">新增产品</a></div>
+    <table border="1px" cellspacing="0" cellpadding="0"  align="center" class="protable" >
+        <tr style="background: rgb(242,242,242)">
+            <td>序号</td>
+            <td>产品编号</td>
+            <td>产品名称</td>
+            <td>单价</td>
+            <td>剩余数量</td>
+            <td>描述</td>
+            <td>操作</td>
+        </tr>
+        <tr th:each="produce,produceState:${produceList}">
+            <td th:text="${produceState.count}"></td>
+            <td id="pid" th:text="${produce.id}"></td>
+            <td th:text="${produce.name}"></td>
+            <td th:text="${produce.price}"></td>
+            <td th:text="${produce.num}"></td>
+            <td th:text="${produce.desc}"></td>
+            <td>
+               <div style="margin: auto;width: 164px;text-align: center;">
+                   <div class="a_href"> <a class="promodify" href="javascript:void(0)">修改</a></div>
+                   <div class="a_href1"> <a href="javascript:void(0)" class="pro_select">查看</a></div>
+                   <div class="a_href2"><a href="javascript:void(0)" class="prodel">删除</a></div>
+               </div>
+            </td>
+        </tr>
+        <td th:colspan="7">
+            <a href="javascript:void(0)" id="pre" style="text-decoration: none;font-size: 17px;color:black;" ><</a>
+            <input id="curr"  th:value="${pageInfo.curr}" type="text" style="border:none;border-radius:3px;height: 30px;width: 30px;background:  rgba(0,150,136);text-align: center;color: white;" readonly="readonly"/>
+            <a href="javascript:void(0)" id="next" style="text-decoration: none;font-size: 17px;color:black;">></a>
+            <input id="pc" type="hidden" th:value="${pageInfo.getTotalpagecount()}"/><!--总页数-->
+            <input style="width: 35px;margin-left:35px;" type="number" name="pageSize" th:value="${pageInfo.getPageSize()}" min="5" max="30" />条数据/页
+        </td>
+    </table>
+</div>
+<script src="/lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+<script>
+    $(function () {
+
+        $(".promodify").click(function () {
+           var pid= $(this).parent().parent().parent().parent().find("#pid").text();
+           window.location.href="produceModifyPage?pid="+pid;
+        });
+
+        $(".prodel").click(function () {
+            var pid= $(this).parent().parent().parent().parent().find("#pid").text();
+            window.location.href="produce_delete?pid="+pid;
+        });
+        $(".pro_select").click(function () {
+            var pid= $(this).parent().parent().parent().parent().find("#pid").text();
+            window.location.href="proselect_page?pid="+pid;
+        });
+        $("[name='pageSize']").blur(
+            function () {
+                var pagesize= $("[name='pageSize']").val();
+                window.location.href="producePage?produceName="+$("[name='cname']").val()+"&pageSize="+pagesize;
+            }
+        );
+        var protableheight=parseInt($(".protable").height())+220;
+        $(".optarea").height(protableheight+"px");
+        $(".sel_produce").click(function(){
+            var pagesize= $("[name='pageSize']").val();
+            window.location.href="producePage?produceName="+$("[name='cname']").val()+"&pageSize="+pagesize;
+        })
+        $("#next").click(function () {
+            var pagesize= $("[name='pageSize']").val();
+           var curr= $("#curr").val();
+           curr++;
+            window.location.href="producePage?curr="+curr+"&produceName="+$("[name='cname']").val()+"&pageSize="+pagesize;
+        });
+
+
+        $("#pre").click(function () {
+            var pagesize= $("[name='pageSize']").val();
+            var curr= $("#curr").val();
+            curr--;
+            window.location.href="producePage?curr="+curr+"&produceName="+$("[name='cname']").val()+"&pageSize="+pagesize;
+        });
+
+        if($("#curr").val()==1){
+            $("#pre").hide(100);
+        }
+        if($("#curr").val()==$("#pc").val()){
+            $("#next").hide(100);
+        }
+    });
+</script>
+
+</body>
+</html>

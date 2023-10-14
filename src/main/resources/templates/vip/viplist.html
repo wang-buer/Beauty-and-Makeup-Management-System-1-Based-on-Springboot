@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .center{
+            width: 1299px;
+            height: 350px;
+            background: white;
+            margin: auto;
+        }
+        input{outline: none}
+        #selpt{
+            height: 50px;
+            width: 500px;
+            margin: auto;
+            margin-left: 114px;
+            margin-top: 20px;
+            outline: none;
+            border-radius: 6px;
+        }
+        body{background: rgb(242,242,242)}
+        .protable{
+            margin-top: 30px;
+            width: 1101px;
+            background: white;
+            text-align: center;
+            border-color: rgb(242,242,242);
+            position: relative;
+            top: 27px;
+        }
+        #dels_opt{
+            width: 100px;
+            height: 30px;
+            background: rgba(0,150,136);
+            color: white;
+            text-align: center;
+            border-radius: 4px;
+            float: left;
+            font-size: 14px;
+        }
+        #add-opt{
+            margin-left: 112px;
+            width: 100px;
+            color: white;
+            height: 30px;
+            text-align: center;
+            background: rgba(255,87,34);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .protable td{height: 36.89px;}
+        #curr{border:0px;}
+        tr:hover{background: rgb(242,242,242);}
+        .opt_area_one{
+            margin: auto;
+            width: 231px;
+            margin-top: 37px;
+        }
+        .a{
+            position: relative;
+            top: 5px;
+        }
+        .vipmfy{
+            background: rgba(0,150,136);text-decoration: none;color: white;border-radius:  1px;display: block;font-size: 11px;
+            width: 34px;
+            height: 23px;
+            float: left;
+            padding-top: 6px;
+            border-radius: 4px;
+        }
+        .vipdel{
+            background: rgba(255,87,34);text-decoration: none;color: white;border-radius: 1px;display: block;font-size: 11px;
+            width: 34px;
+            height: 23px;
+            float: left;
+            margin-left: 50px;
+            padding-top: 6px;
+            border-radius: 4px;
+        }
+        .vipselect{
+            background: rgba(0,150,136);
+            width: 34px;
+            height: 23px;
+            color: white;
+            border-radius: 1px;display: block;font-size: 11px;
+            border-radius: 4px;
+            text-align: center;
+            float: left;
+            margin-left: 50px;
+            padding-top: 6px;
+            text-decoration: none;
+        }
+        .opt_area_two{
+            margin: auto;
+
+            width: 216px;
+
+            height: 31px;
+
+        }
+        .addvip{
+            background: rgba(0,150,136);
+            height: 30px;
+            width: 100px;
+            color: white;
+            text-align: center;
+            padding-top: 9px;
+            position: relative;
+            left: 101px;
+            top: 44px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="center">
+    <div class="addvip"><span>新增会员类型</span></div>
+    <table border="1px" cellspacing="0" cellpadding="0" class="protable" id="prot" align="center">
+        <tr style="background: rgb(242,242,242)">
+            <td>会员类型编号</td>
+            <td>会员类型名称</td>
+            <td>会员类型价格</td>
+            <td>操作</td>
+        </tr>
+
+        <tr th:each="v,vstate:${vipList}">
+            <td th:text="${v.getId()}">
+            <td th:text="${v.getVname()}">
+            <td th:text="${v.getVprice()}">
+            <td>
+                <div class="opt_area_two">
+                    <input type="hidden"  id="vid"  th:value="${v.getId()}"/>
+                    <a href="javascript:void (0)" class="vipmfy">修改</a>
+                    <a href="javascript:void (0)" class="vipdel"/>删除</a>
+                    <a href="javascript:void (0)" class="vipselect"/>查看</a>
+                </div>
+            </td>
+        </tr>
+
+    </table>
+</div>
+<script src="/lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+
+<script>
+    $(function () {
+        $(".vipselect").click(function () {
+            window.location.href="vipselect?id="+$(this).prev().prev().prev().val();
+        });
+        var protableheight=parseInt($(".protable").height())+220;
+        $(".center").height(protableheight+"px");
+        $(".addvip").click(function () {
+            window.location.href="vipadd";
+        });
+        $(".vipmfy").click(function () {
+            window.location.href="vipmfy?id="+$(this).prev().val();
+        });
+        $(".vipdel").click(function () {
+            $.getJSON("vipdel?vid="+$(this).prev().prev().val(),function (data) {
+                if($.parseJSON(data)==true){
+                    alert("删除成功");
+                    window.location.reload();
+                }
+            });
+        });
+    })
+</script>
+</body>
+</html>

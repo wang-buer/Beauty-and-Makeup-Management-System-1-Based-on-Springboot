@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mh.product.mapper.ProMapper">
+<select id="getInfo" resultType="CusPayL">
+  SELECT
+  c.`id`,
+  c.`price`,
+  cus.`cname`,
+  (SELECT pac.pname
+  FROM package pac
+  WHERE pac.`pid`=c.`package`
+  ) AS pname,
+  c.`paydate`,
+  e.`empname`,
+  (SELECT
+  cs.vname
+  FROM vip cs
+  WHERE c.`vipid`= cs.`id`
+  )AS vname,
+  c.`paydesc`,
+  c.`meal_sum`,
+  c.`produce_sum`,
+  (SELECT `name` FROM produce pro WHERE c.`produce_id`=pro.`id`) AS proname
+  FROM cuspay c,customer cus,emp emp,emp e
+  WHERE   c.`empid`=emp.`id` AND  c.`cusid`=cus.`cid` AND c.`empid`=e.`id`AND emp.id=#{empid}
+  <if test="month!=null">
+    and DATE_FORMAT( c.paydate, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )
+  </if>
+  <if test="prevMonth!=null">
+    and  PERIOD_DIFF( date_format( now( ) , '%Y%m' ) , date_format( c.paydate, '%Y%m' ) ) =1
+  </if>
+  <if test="year!=null">
+    and  YEAR(c.paydate)=YEAR(NOW())
+  </if>
+  <if test="empid!=null and empid!=''">
+    and c.empid=#{empid}
+  </if>
+  ORDER BY price DESC
+
+</select>
+<select id="getMonthProduce" resultType="double">
+  SELECT SUM(price)FROM`chuangmeng`.`cuspay` c WHERE produce_id IS NOT NULL
+  <if test="empid!=null">
+    and c.empid=#{empid}
+  </if>
+  <if test="month!=null">
+    and DATE_FORMAT( c.paydate, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )
+  </if>
+  <if test="prevMonth!=null">
+    and  PERIOD_DIFF( date_format( now( ) , '%Y%m' ) , date_format( c.paydate, '%Y%m' ) ) =1
+  </if>
+  <if test="year!=null">
+    and  YEAR(c.paydate)=YEAR(NOW())
+  </if>
+</select>
+  <select id="getMonthPackage" resultType="double">
+SELECT SUM(price)FROM`chuangmeng`.`cuspay` c WHERE package IS NOT NULL
+    <if test="empid!=null">
+      and c.empid=#{empid}
+    </if>
+    <if test="month!=null">
+      and DATE_FORMAT( c.paydate, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )
+    </if>
+    <if test="prevMonth!=null">
+      and  PERIOD_DIFF( date_format( now( ) , '%Y%m' ) , date_format( c.paydate, '%Y%m' ) ) =1
+    </if>
+    <if test="year!=null">
+      and  YEAR(c.paydate)=YEAR(NOW())
+    </if>
+
+</select>
+  <select id="getMonthVip" resultType="double">
+        SELECT SUM(price)FROM`chuangmeng`.`cuspay` c WHERE vipid IS NOT NULL
+    <if test="empid!=null">
+      and  c.empid=#{empid}
+    </if>
+    <if test="month!=null">
+      and DATE_FORMAT( c.paydate, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )
+    </if>
+    <if test="prevMonth!=null">
+      and  PERIOD_DIFF( date_format( now( ) , '%Y%m' ) , date_format( c.paydate, '%Y%m' ) ) =1
+    </if>
+    <if test="year!=null">
+      and  YEAR(c.paydate)=YEAR(NOW())
+    </if>
+</select>
+
+  <select id="getProReport" resultType="CusPayL">
+      SELECT
+  c.`id`,
+  c.`price`,
+  cus.`cname`,
+  c.`paydate`,
+  e.`empname`,
+  c.`paydesc`,
+  c.`meal_sum`,
+  c.`produce_sum`,
+  (SELECT `name` FROM produce pro WHERE c.`produce_id`=pro.`id`) AS proname
+  FROM cuspay c,customer cus,emp emp,emp e
+  WHERE   c.`empid`=emp.`id` AND  c.`cusid`=cus.`cid` AND c.`empid`=e.`id` AND c.`package` IS NULL AND c.`vipid` IS NULL
+    <if test="month!=null">
+      and DATE_FORMAT( c.paydate, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )
+    </if>
+    <if test="prevMonth!=null">
+      and  PERIOD_DIFF( date_format( now( ) , '%Y%m' ) , date_format( c.paydate, '%Y%m' ) ) =1
+    </if>
+    <if test="year!=null">
+      and  YEAR(c.paydate)=YEAR(NOW())
+    </if>
+    <if test="empid!=null and empid!=''">
+      and c.empid=#{empid}
+    </if>
+  ORDER BY price DESC
+  </select>
+  <!--库存报表-->
+  <update id="updatepronumber">
+UPDATE
+  `chuangmeng`.`produce`
+SET
+  `num`=#{num}
+WHERE `id`=#{id};
+
+  </update>
+  <insert id="addIntoBook" parameterType="IntoGoods">
+
+INSERT INTO `chuangmeng`.`intogoods` (
+  `id`,
+  `empid`,
+  `num`,
+  `intotime`,
+  `pid`
+)
+VALUES
+  (
+    #{id},
+    #{empid},
+    #{num},
+    #{intotime},
+    #{pid}
+  ) ;
+  </insert>
+  <select id="getProIntoBook" resultType="IntoGoods">/*查看进货记录*/
+    SELECT
+  `id`,
+  (
+  SELECT emp.`empname`
+  FROM emp
+  WHERE emp.`id`=intogoods.`empid`) AS empname,
+  `num`,
+  `intotime`,
+  (SELECT produce.name FROM produce WHERE produce.id=intogoods.`pid`) pname,
+    (SELECT price*intogoods.`num`
+    FROM produce
+    WHERE produce.`id`=intogoods.`pid` ) AS totalprice
+FROM
+  `chuangmeng`.`intogoods`
+  <if test="pid!=null">
+    where pid=#{pid}
+  </if>
+
+  </select>
+  <select id="getproduceList_option" resultType="Produce">
+    SELECT
+  `id`,
+  `name`,
+  `price`
+FROM
+  `chuangmeng`.`produce`
+
+  </select>
+</mapper>
+
+

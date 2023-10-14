@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mh.member.mapper.CuspayMapper">
+  <insert id="addCuspay" parameterType="Cuspay" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+    INSERT INTO `chuangmeng`.`cuspay` (
+      `id`,
+      `price`,
+      `cusid`,
+      `produce_id`,
+      `paydate`,
+      `empid`,
+      `vipid`,
+      `package`,
+      `paydesc`
+    )
+    VALUES
+      (
+        null,
+        #{price},
+        #{cusid},
+        #{produceId},
+        #{paydate},
+        #{empid},
+        #{vipid},
+        #{pack},
+        #{paydesc}
+      ) ;
+  </insert>
+  <select id="getCustomerById" resultType="Cuspay" parameterType="int">
+    SELECT
+      `id`,
+      `price`,
+      `cusid`,
+      `produce_id` produceId,
+      `paydate`,
+      `empid`,
+      `vipid`,
+      `package` pack,
+      `paydesc`
+    FROM
+      `chuangmeng`.`cuspay`
+    WHERE cusid=#{id} AND empid=#{empId}
+
+  </select>
+  <update id="updateCuspay" parameterType="Cuspay">
+        UPDATE
+      `chuangmeng`.`cuspay`
+        SET
+          `price` = #{price},
+          `paydesc` = #{paydesc}
+        WHERE `cusid` = #{cusid} and empid=#{empid} and paydate=#{paydate};
+  </update>
+
+  <select id="getCuspayList" parameterType="int" resultType="Cuspay">
+          SELECT
+            c.`id`,
+            c.`price`,
+            c.`cusid`,
+            c.`produce_id`,
+            c.`paydate`,
+            c.`empid`,
+            c.`vipid`,
+            c.`package` pack,
+            c.`paydesc`,
+            e.`empname`,
+            v.`vname`
+          FROM
+            `chuangmeng`.`cuspay` c
+          LEFT JOIN emp e ON e.`id`=c.`empid`
+          LEFT JOIN vip v ON v.`id`=c.`vipid`
+          WHERE cusid=#{id} and produce_id is null and package is null
+  </select>
+  <insert id="addCuspays" parameterType="CuspayArry">
+    INSERT INTO `chuangmeng`.`cuspay` (
+          `empid`,
+          `cusid`,
+          `package`,
+          `meal_sum`,
+          `price`,
+          `paydate`
+        )
+        VALUES
+        <foreach collection="array" item="item" separator=",">
+          (
+            #{item.empId},
+            #{item.cid},
+            #{item.pack},
+            #{item.sum},
+            #{item.groupPrice},
+            now()
+           )
+        </foreach>
+  </insert>
+
+    <insert id="addCuspaysByProduce" parameterType="CuspayArry">
+        INSERT INTO `chuangmeng`.`cuspay` (
+        `price`,
+        `cusid`,
+        `produce_id`,
+        `paydate`,
+        `empid`,
+        `produce_sum`
+        )
+        VALUES
+        <foreach collection="array" item="item" separator=",">
+            (
+            #{item.prices},
+            #{item.cid},
+            #{item.produceId},
+            now(),
+            #{item.empId},
+            #{item.sum}
+            )
+            </foreach>
+    </insert>
+</mapper>

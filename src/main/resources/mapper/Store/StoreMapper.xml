@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mh.store.mapper.StoreMapper">
+<select id="getInToday" resultType="CusPayL">/*今天*/
+        SELECT
+        SUM( `price`) price
+        FROM
+        `chuangmeng`.`cuspay`
+        where to_days(paydate) = to_days(now());
+</select>
+    <select id="getInThisWeek" resultType="CusPayL">/*本周*/
+        SELECT
+        SUM( `price`) price
+        FROM
+        `chuangmeng`.`cuspay`
+        WHERE YEARWEEK(date_format(paydate,'%Y-%m-%d')) = YEARWEEK(now());
+</select>
+    <select id="getInprevWeek" resultType="CusPayL">/*上周*/
+        SELECT
+        SUM( `price`) price
+        FROM
+        `chuangmeng`.`cuspay`
+        WHERE   YEARWEEK(date_format(paydate,'%Y-%m-%d')) = YEARWEEK(now())-1;
+</select>
+<select id="getInThisMonth" resultType="CusPayL">/*本月*/
+        SELECT
+        SUM( `price`) price
+        FROM
+        `chuangmeng`.`cuspay`
+        where date_format(paydate,'%Y-%m')=date_format(now(),'%Y-%m');
+</select>
+<select id="getInPrevMonth" resultType="CusPayL">/*上月*/
+        SELECT
+        SUM( `price`) price
+        FROM
+        `chuangmeng`.`cuspay`
+        where date_format(paydate,'%Y-%m')=date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m');
+</select>
+        <select id="getInThisYear" resultType="CusPayL">/*本年*/
+        SELECT
+        SUM( `price`) price
+        FROM
+        `chuangmeng`.`cuspay`
+        where YEAR(paydate)=YEAR(NOW());
+        </select>
+<select id="getInPrevYear" resultType="CusPayL">/*上年*/
+        SELECT
+        SUM( `price`) price
+        FROM
+        `chuangmeng`.`cuspay`
+        where year(paydate)=year(date_sub(now(),interval 1 year));
+</select>
+<select id="getThisSeason"  resultType="CusPayL">/*本季度*/
+        SELECT
+        SUM( `price`) price
+        FROM
+        `chuangmeng`.`cuspay`
+        where QUARTER(paydate)=QUARTER(now());
+</select>
+<select id="getPrevSeason"  resultType="CusPayL">/*上季度*/
+        SELECT
+        SUM( `price`) price
+        FROM
+        `chuangmeng`.`cuspay`
+        where QUARTER(paydate)=QUARTER(DATE_SUB(now(),interval 1 QUARTER));
+</select>
+</mapper>

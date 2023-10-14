@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .center{
+            height: 8000px;
+            width: 602px;
+            margin: auto;
+        }
+        .subimt_buttom,.return_buttom,.reset_buttom{
+            border: none;
+            background: rgba(0,150,136);
+            color: white;
+            width: 111.38px;
+            height: 38px;
+        }
+        input[type=text]{
+            text-align: center;
+            font-size: 18px;
+            outline: none;
+            width: 190px;
+            height: 38px;
+        }
+        input[type=checkbox]{
+            height: 20px;
+            width: 20px;
+        }
+        .sub_area{
+            width: 344px;
+            margin: auto;
+            margin-top: 28px;
+        }
+        td{width: 200px;}
+        textarea{resize: none;width:576px ;height: 210px;outline: none;}
+        select{ outline: none;
+            width: 190px;
+            height: 38px;
+        }
+    </style>
+</head>
+<body>
+<div class="center">
+    <form action="" method="post" >
+        <p>套餐名称&nbsp;&nbsp;&nbsp;&nbsp;<input required class="name" style="font-size: 18px;" name="pacname" type="text"/>套餐价格&nbsp;&nbsp;&nbsp;&nbsp;<input class="proprice" name="pacprice" type="text"/></p>
+        <p>所属会员&nbsp;&nbsp;&nbsp;&nbsp;<select class="vipid" name="vipid">
+            <option th:each="a,a1:${vipList}" th:text="${a.getVname()}" th:value="${a.getId()}"></option>
+        </select>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是否激活套餐&nbsp;&nbsp;&nbsp;&nbsp;
+        <form><label for="istrue" class=""  >激活</label>
+            <input type="radio" name="istrue" id="istrue" checked />
+            <label for="isfalse" >不激活</label>
+            <input type="radio" name="istrue" id="isfalse"    /></form></p>
+        <p>套餐包含产品</p>
+        <div class="addproduce">
+            <table style="text-align: center;" align="center">
+                <tr>
+                    <td>产品名称</td>
+                    <td>产品价格</td>
+                    <td>产品数量</td>
+                </tr>
+                <tr th:each="pro,prostate:${produces}">
+                    <td th:text="${pro.getName()}"></td>
+                    <td th:text="${pro.getPrice()}"></td>
+                    <input class="produceId" type="hidden" th:value="${pro.getId()}"/>
+                    <td>
+                        <input class="pn"  type="number" min="0" max="100"/>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+        <textarea name="desci" class="desci">
+
+		</textarea>
+        <div class="sub_area">
+            <input class="subimt_buttom" type="button" value="提交"/>
+            <input class="return_buttom" type="button" value="返回" />
+            <input class="reset_buttom" type="reset" value="重置" />
+        </div>
+    </form>
+</div>
+<script src="/lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+<script>
+    $(function () {
+        $(".return_buttom").click(function () {
+            window.history.go(-1);
+        });
+        $(".reset_buttom").click(function () {
+            $("input[type='text']").val("");
+            $("input[type='number']").val("");
+        });
+        $(".subimt_buttom").click(function () {
+            var pacname=$(".name").val();
+            var pacprice=$(".proprice").val();
+            var vipid=$(".vipid").val();
+            var desci=$(".desci").val();
+            var istrue="";
+            var val=$("#istrue:checked").val();
+            var array=new Array();
+            $(".pn").each(function () {
+                if( $(this).val()!=0||$(this).val()!=""){
+                    array.push($(this).val());
+                    array.push($(this).parent().prev().val());
+                }
+            });
+            if(val==null){
+                istrue=0;
+            }else{
+                istrue=1;
+            }
+            window.location.href="packageaddsave?proinfo="+array+"&pacname="+pacname+"&pacprice="+pacprice+"&istrue="+istrue+"&vipid="+vipid+"&desci="+desci;
+
+
+
+
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        input[type=text]{width: 194px;height: 44px;text-align: center;font-size: 18px;outline: none;border-radius: 1px;}
+      select{width: 194px;height: 44px;text-align: center;font-size: 18px;outline: none;border-radius: 1px;}
+        textarea{outline: none;font-size: 18px;resize: none;}
+        .optarea{
+            margin: auto;
+            width: 567px;}
+        .sub_area{width: 344px;margin: auto;}
+    </style>
+
+</head>
+<body>
+<div class="optarea">
+    <form action="/vip/vipmfysave">
+        <input type="hidden" name="id" th:value="${onevip.getId()}"/>
+        <p>会员类型名称：<input type="text" name="vname" class="vname" required="" th:value="${onevip.getVname()}"/></p>
+        <p>  会员类型价格：<input type="text" name="vprice" class="vprice" required th:value="${onevip.vprice}"/></p>
+        包含套餐：<select name="vtid">
+        <option th:text="${onevip.pacname}" th:value="${onevip.vtid}"></option>
+        <option th:each="a,aa:${packageList}" th:value="${a.getPid()}" th:text="${a.getPname()}"></option>
+    </select>
+        <p>会员类型描述：</p><textarea style="width: 558px;height: 133px;" name="describe" class="describe" th:text="${onevip.describe}"></textarea>
+        <div class="sub_area">
+            <input type="hidden" th:value="${onevip.getId()}"/>
+            <input type="submit" id="vipmfy" style="border: none;background: rgba(0,150,136);width: 111.38px;height: 38px;color: white;outline: none;"  value="修改"/>
+            <input type="reset" style="border: none;background: rgba(0,150,136);width: 111.38px;height: 38px;color: white;outline: none;" value="重置"/>
+            <input type="button" class="return" style="border: none;background: rgba(0,150,136);width: 111.38px;height: 38px;color: white;outline: none;" value="返回"/>
+        </div>
+    </form>
+</div>
+<script src="/lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+<script>
+$(function () {
+    $(".return").click(function () {
+        window.history.go(-1);
+    });
+})
+</script>
+</body>
+</html>

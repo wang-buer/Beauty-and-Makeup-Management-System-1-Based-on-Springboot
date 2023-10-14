@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>顾客管理页面</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/lib/layui-v2.5.4/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+    <script src="/lib/layui-v2.5.4/layui.js" charset="utf-8"></script>
+    <style>
+
+    </style>
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+
+        <fieldset class="layui-elem-field layuimini-search">
+            <legend>搜索信息</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <form class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">顾客姓名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="cname" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">顾客年龄</label>
+                            <div class="layui-input-inline">
+                                <input type="number" name="age" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">顾客生日</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="birthday" id="birthday" lay-verify="birthday" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">顾客地址</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="address" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <a class="layui-btn" lay-submit="" lay-filter="data-search-btn">查询</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
+
+        <div class="layui-btn-group">
+            <button class="layui-btn data-add-btn">增加顾客</button>
+        </div>
+
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+        <div id="user" style="display: none" th:text="${session.user.id}"></div>
+    </div>
+</div>
+<div id="unSigned" style="display: none;margin-top: 20px">
+    <form class="layui-form" action="">
+        <div class="layui-form-item" style="    margin-left: -7%;
+    margin-top: 15%;">
+            <label class="layui-form-label" style="width: 100px">原因</label>
+            <div class="layui-input-block">
+                <input type="text" name="whyNo" required style="width: 240px" lay-verify="required"
+                       autocomplete="off" class="layui-input">
+                <input type="hidden" id="cid" name="cid">
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-top: 13%;
+    margin-left: 12%;">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="unSign-data-search-btn">提交</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<div style="display: none" id="signIn">
+    <form class="layui-form layui-form-pane" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">顾客姓名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="cname" lay-verify="cname" disabled placeholder="请输入" class="layui-input">
+                <input type="hidden" name="cusid" >
+                <input type="hidden" name="empid" >
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">身高(厘米)</label>
+            <div class="layui-input-inline">
+                <input  type="number" name="stature" lay-verify="stature" placeholder="请输入" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">体重(斤)</label>
+            <div class="layui-input-inline">
+                <input type="number"  name="weight" lay-verify="weight" placeholder="请输入" value="0" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">胸围</label>
+            <div class="layui-input-inline">
+                <input  type="number" class="layui-input" name="bust"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">腰围</label>
+            <div class="layui-input-inline">
+                <input type="number" class="layui-input"  name="waistline"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">臀围</label>
+            <div class="layui-input-inline">
+                <input type="number" class="layui-input" name="hip"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">脂肪率(%)</label>
+            <div class="layui-input-inline">
+                <input type="number" class="layui-input" name="bodyfat"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">脂肪量</label>
+            <div class="layui-input-inline">
+                <input type="number" class="layui-input" name="fatmass"/>
+            </div>
+        </div>
+            <div class="layui-input-block" style="margin-left: 43%;
+    margin-top: 4%;">
+                <button class="layui-btn" lay-submit lay-filter="signIn-data-search-btn">提交</button>
+            </div>
+    </form>
+</div>
+</body>
+</html>
+<script src="/projects/member/memberManagerPage.js" charset="utf-8"></script>

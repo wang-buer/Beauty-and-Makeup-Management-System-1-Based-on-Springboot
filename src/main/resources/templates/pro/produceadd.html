@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        input{outline: none}
+        #opt_area{
+            width: 600px;
+            margin: auto;}
+        input[name='name'],input[name='num'],input[name='price']{width: 194px;height: 44px;text-align: center;}
+        select[name='type']{width: 194px;height: 44px;}
+        input[type=submit]{
+            border: none;
+            color: white;
+            width: 111.38px;height: 38px;background: rgb(0,150,136);
+        }
+        input[type=submit]:hover{opacity: 0.9;}
+        input[type=reset]:hover{opacity: 0.9;}
+        input[type=button]{
+            border: none;		   color: white;
+            width: 111.38px;height: 38px;background: rgb(0,150,136);
+        }
+        input[type=reset]{border: none;background: rgb(0,150,136);
+            width: 111.38px;height: 38px;		   color: white;
+        }
+        select,textarea{outline: none;}
+    </style>
+</head>
+<body>
+<div id="opt_area">
+    <form action="/pro/addproducesave">
+        <p>产品名称:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="name" value="" required/><span style="color: red;display: none;" id="pnameverify" required ></span>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;产品类型:
+            <select name="type" style="width: 111.38px;height: 38px;" >
+                <option th:each="pt,protypeState:${proTypeList}" th:value="${pt.id}" th:text="${pt.name}" th:title="${pt.desc}"></option>
+            </select>
+        </p>
+        <p>产品数量:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="number"  name="num" value="" min="0"  required/>
+            产品价格:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="price" value="" min="1" required/></p>
+        <p>产品描述:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<textarea style="width: 486px;height: 300px;resize: none;" name="desc">
+
+        </textarea></p>
+        <p style="width: 344px;margin: auto;">
+            <input class="sub_add" type="submit" value="添加"/>
+            <input type="reset" id="reset" value="重置" />
+            <input type="button" value="返回"  class="return"/>
+        </p>
+    </form>
+</div>
+
+<script src="/lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+<script>
+    $(function () {
+        $("#reset").click(function(){
+            $(":input").val("");
+        });
+        $("[name='type']").width($("[name='name']").width()+"px");
+
+        $("[name='num']").width($("[name='name']").width()+"px");
+        $("[name='name']").blur(function () {
+            $.getJSON("verifyProName?name="+$("[name='name']").val(),function (data) {
+                if($.parseJSON(data)==true){
+
+                    $("#sub").attr("disabled", false);
+                    $("#pnameverify").hide(600)
+                }else if($.parseJSON(data)==false){
+                    $("#sub").attr("disabled", true);
+                    $("#pnameverify").text("此产品已经存在不能重复添加");
+                    $("#pnameverify").show(600);
+
+                }else{
+
+                }
+            });
+        });
+    });
+
+</script>
+</body>
+</html>

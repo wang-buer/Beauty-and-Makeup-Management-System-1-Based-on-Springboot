@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mh.emp.mapper.EmpManagerMapper">
+    <select id="getEmps" resultType="com.mh.emp.entity.EmpManager">
+        SELECT
+          `id`,
+          `empname`,
+          `emptype`,
+          `login`,
+          `create_date`,
+          `update_date`
+        FROM
+          `chuangmeng`.`emp`
+        WHERE isdel = 0
+        <if test="empname != null">
+          AND empname LIKE CONCAT('%', #{empname}, '%')
+        </if>
+        <if test="emptype">
+          AND emptype LIKE CONCAT('%', #{emptype}, '%')
+        </if>
+        <if test="pageBean!=null">
+            LIMIT #{pageBean.page}, #{pageBean.limit} ;
+        </if>
+    </select>
+    <insert id="signIn" parameterType="com.mh.emp.entity.Emprattendance">
+            INSERT INTO `chuangmeng`.`emprattendance` (
+              `indate`,
+              `empid`,
+              `isin`,
+              `whyNo`
+            )
+            VALUES
+              (
+                #{emprattendance.indate},
+                #{emprattendance.empid},
+                #{emprattendance.isin},
+                #{emprattendance.whyNo}
+              )
+    </insert>
+
+    <select id="getEmpRattendance" parameterType="Emprattendance" resultType="Emprattendance">
+            SELECT
+              `id`,
+              `indate`,
+              `empid`,
+              `isin`,
+              `whyNo`
+            FROM
+              `chuangmeng`.`emprattendance`
+            WHERE empid=#{dance.empid} AND DATE_FORMAT(`indate`,'%Y-%m-%d')>=#{format}
+            ORDER By indate desc
+    </select>
+    <select id="signList" resultType="Emprattendance">
+            SELECT
+              `id`,
+              `indate`,
+              `empid`,
+              `isin`,
+              `whyNo`
+            FROM
+              `chuangmeng`.`emprattendance`
+            WHERE empid=#{dance.empid}
+            <if test="dance.startDate !=null and dance.startDate !=''">
+                and DATE_FORMAT(`indate`,'%Y-%m-%d') >= #{dance.startDate}
+            </if>
+            <if test="dance.endDate !=null and dance.endDate !=''">
+                and  DATE_FORMAT(`indate`,'%Y-%m-%d') &lt;= #{dance.endDate}
+            </if>
+            ORDER By indate desc
+            <if test="pageBean!= null">
+                LIMIT #{pageBean.page},#{pageBean.limit} ;
+            </if>
+    </select>
+</mapper>
