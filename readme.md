@@ -29,45 +29,42 @@
 
 ### 4.1 登录
 
-![登录](https://s2.loli.net/2023/10/13/qzBPVQjpJyD8ktf.jpg)
+![登录](https://www.codeshop.fun/Typora-Images/202311152216290.jpg)
+
 
 ### 4.2 管理员模块
 
-![首页](https://s2.loli.net/2023/10/13/tmlFQGJS9aq8EsP.jpg)
+![产品分类管理](https://www.codeshop.fun/Typora-Images/202311152217538.jpg)
 
-![会员类型管理](https://s2.loli.net/2023/10/13/ktoEWXgLpShliIY.jpg)
+![产品列表](https://www.codeshop.fun/Typora-Images/202311152217554.jpg)
 
-![产品分类管理](https://s2.loli.net/2023/10/13/72tJuRAjyCKxzrE.jpg)
+![顾客购买产品](https://www.codeshop.fun/Typora-Images/202311152217543.jpg)
 
-### ![产品列表](https://s2.loli.net/2023/10/13/tmpcTIgOj52NU4B.jpg)
+![顾客管理](https://www.codeshop.fun/Typora-Images/202311152217572.jpg)
 
-![库存管理](https://s2.loli.net/2023/10/13/RMDvyc8NfQ7ap6E.jpg)
+![顾客活跃度](https://www.codeshop.fun/Typora-Images/202311152217580.jpg)
 
-![顾客管理](https://s2.loli.net/2023/10/13/H7ituRDoIP89rFG.jpg)
+![顾客考勤](https://www.codeshop.fun/Typora-Images/202311152217587.jpg)
 
-![顾客购买产品](https://s2.loli.net/2023/10/13/gT1XOmS5Ju8YbMc.jpg)
+![顾客签到](https://www.codeshop.fun/Typora-Images/202311152217958.jpg)
 
-![顾客签到](https://s2.loli.net/2023/10/13/5ONDHskyzP9364u.jpg)
+![会员类型管理](https://www.codeshop.fun/Typora-Images/202311152217011.jpg)
 
-### ![顾客活跃度](https://s2.loli.net/2023/10/13/zrfQ5yawEA8qNLV.jpg)
+![角色管理](https://www.codeshop.fun/Typora-Images/202311152217075.jpg)
 
-![顾客考勤](https://s2.loli.net/2023/10/13/BOWrEJ83KFvp9nz.jpg)
+![库存管理](https://www.codeshop.fun/Typora-Images/202311152217234.jpg)
 
-![套餐管理](https://s2.loli.net/2023/10/13/UYbPkBxCuW7mqyw.jpg)
+![首页](https://www.codeshop.fun/Typora-Images/202311152217268.jpg)
 
-![员工管理](https://s2.loli.net/2023/10/13/Ui7JPmfH45wdWQ6.jpg)
+![套餐管理](https://www.codeshop.fun/Typora-Images/202311152217344.jpg)
 
-![销售报表](https://s2.loli.net/2023/10/13/mM391DftHcxPWjR.jpg)
+![销售报表](https://www.codeshop.fun/Typora-Images/202311152217478.jpg)
 
-![角色管理](https://s2.loli.net/2023/10/13/djrVepIicQB4Fl7.jpg)
-
-### 获取方式&视频演示
-
-下方扫一下，回复关键词：美妆
-
-![202309291447341](https://s2.loli.net/2023/10/06/lxLMirNn2tyaIob.png)
+![员工管理](https://www.codeshop.fun/Typora-Images/202311152217517.jpg)
 
 
+## 获取方式
 
+下方扫一扫关注后，后台回复关键词：**美妆**，查看导入教程视频、sql脚本和完整源码等
 
-
+ ![](https://www.codeshop.fun/Typora-Images/202205281253739.png)
